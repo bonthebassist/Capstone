@@ -15,6 +15,8 @@ import MyDetailsPage from './pages/MyDetailsPage';
 import Login from './pages/Login';
 import Register from './pages/Register'
 
+// import { PersistGate } from 'redux-persist/lib/integration/react';
+
 
 function App() {
   return (

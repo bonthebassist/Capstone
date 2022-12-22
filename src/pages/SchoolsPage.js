@@ -1,4 +1,4 @@
-import React, { useContext, useEffect } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import {
   MDBCard,
   MDBCardBody,
@@ -14,7 +14,8 @@ import {AuthContext} from '../context/AuthProvider';
 import axios from 'axios';
 
 export default function SchoolsPage() {
-  const HillsSchoolPath = '/hills+school' //make this a query parameter set from school name
+  const [schoolsData, setSchoolsData] = useState({})
+  
   const navigate = useNavigate();
   
   function handleClick(path) {
@@ -24,38 +25,39 @@ export default function SchoolsPage() {
   console.log(auth.email)
 
   useEffect(() => {
-    axios.get(`http://localhost:3500/user?email=${auth.email}`)
+    axios.get(`http://localhost:3500/user/getSchools?email=${auth.email}`)
     .then((resp) => {
       console.log(resp.data)
+      setSchoolsData(resp.data)
     })
   }, [])
 
+  let cardsMap = schoolsData.map((school)=>{
+    let card = (
+      <MDBCard className='school-card'>
+      <MDBCardBody onClick={() => handleClick(`DisplaySchool`)}>
+      <MDBCardTitle className='school-card-title'>{school.schoolName}</MDBCardTitle>
+      </MDBCardBody>
+    </MDBCard>
+      )
+      return card
+    })
+
   return (
     <>
-    
     <DashboardElements/>
     <div className='content-div'>
-    <h1>{auth.email}</h1>
+    <h4>Welcome back!</h4>
+    <p> you are signed in as: {auth.email}</p>
       <link
         href="https://use.fontawesome.com/releases/v5.15.1/css/all.css"
         rel="stylesheet"
     	/>
-      <MDBCard className='school-card'>
-      <MDBCardBody onClick={() => handleClick(`DisplaySchool`)}>
-      <MDBCardTitle className='school-card-title'>Hills School</MDBCardTitle>
-      {/* <MDBBtnGroup shadow='0' aria-label='Basic example'>
-        <MDBBtn>Info</MDBBtn>
-        <MDBBtn>Attendance</MDBBtn>
-        <MDBBtn>Links</MDBBtn>
-        <MDBBtn>Diaries</MDBBtn>
-        <MDBBtn>Contact admin</MDBBtn>
-        </MDBBtnGroup> */}
-      </MDBCardBody>
-    </MDBCard>
+    {/* {cardsMap} */}
 
     <MDBCard className='add-card' >
       <MDBCardBody onClick={() => handleClick(`NewSchoolForm`)}> 
-      <MDBCardTitle> <MDBIcon fas icon="plus" /> Add a School</MDBCardTitle>
+      <MDBCardTitle> <MDBIcon fas icon="plus" />Add a School</MDBCardTitle>
       </MDBCardBody>
     </MDBCard>
 

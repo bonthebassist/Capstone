@@ -1,11 +1,16 @@
 import React from 'react'
-import { Link } from 'react-router-dom';
+import { NavLink } from 'react-router-dom';
 import { useRef, useState, useEffect, useContext } from 'react'
 import {AuthContext} from "../context/AuthProvider"
 import axios from '../api/axios';
-import { NavLink } from 'react-bootstrap';
+// import { NavLink } from 'react-bootstrap';
 import DashboardElements from './DashboardPage';
 import { Navigate } from 'react-router-dom';
+
+import Button from 'react-bootstrap/Button';
+import Form from 'react-bootstrap/Form';
+import { Container } from 'react-bootstrap';
+
 const LOGIN_URL = './users/login';
 
 function Login() {
@@ -61,21 +66,50 @@ function Login() {
       {success ? (
         <Navigate to="/Schools" />
       ) : (
-        <section>
+        <Container>
           <p ref={errRef} className={errMsg ? "errmsg" : "offscreen"} aria-live="assertive">{errMsg}</p>
           <h1>Sign In</h1>
-          <form onSubmit={handleSubmit}>
-            <label htmlFor="email">Email:</label>
+          <Form onSubmit={handleSubmit}>
+            <Form.Group>
+              <Form.Label>Email</Form.Label>
+              <Form.Control
+              type="text"
+              name="email"
+              ref={userRef}
+              placeholder="Enter email" 
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              required
+              autoFocus/>
+            </Form.Group>
+            <Form.Group>
+              <Form.Label>Password</Form.Label>
+              <Form.Control
+              type="password"
+              name="password"
+              ref={userRef}
+              placeholder="Enter password" 
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              required />
+            </Form.Group>
+            {/* <Form.Group>
+              <Form.Check
+              type="checkbox"
+              label="Remember me for 30 days"
+              onChange={(e) => setEmail(e.target.value)}/>
+            </Form.Group> */}
+            {/* <label htmlFor="email">Email:</label>
             <input
               type="email"
               name="email"
               ref={userRef}
-              autoComplete="off"
+              // autoComplete="off"
               onChange={(e) => setEmail(e.target.value)}
               value={email}
               required
-            />
-            <label htmlFor="password">Password:</label>
+            /> */}
+            {/* <label htmlFor="password">Password:</label>
             <input
               type="password"
               id="password"
@@ -83,16 +117,14 @@ function Login() {
               onChange={(e) => setPassword(e.target.value)}
               value={password}
               required
-            />
-            <button>Sign In</button>
-          </form>
+            /> */}
+            <Button type="submit">Sign In</Button>
+          </Form>
           <p>
             Need An Account? <br />
-            <span className='line'>
-              <Link to='/Register'>Sign Up</Link>
-            </span>
+            <NavLink to='/Register'>Sign Up</NavLink>
           </p>
-        </section>
+        </Container>
       )}
     </>
   )

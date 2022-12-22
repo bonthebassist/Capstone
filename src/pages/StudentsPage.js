@@ -9,10 +9,13 @@ import {
   MDBInput,
   MDBIcon
 } from 'mdb-react-ui-kit';
-import { useNavigate } from "react-router-dom";
+import { Navigate, useNavigate } from "react-router-dom";
 import DashboardElements from './DashboardPage';
 
 export default function StudentsPage() {
+  // const currentUser = useAuth();
+
+  // if (currentUser === undefined) return (<h1>user not found</h1>)
 
   const navigate = useNavigate();
   
@@ -20,6 +23,8 @@ export default function StudentsPage() {
     navigate(path);
   }
   return (
+    // currentUser
+    // ?
     <>
     <DashboardElements/>
     <div className='content-div'>
@@ -48,5 +53,6 @@ export default function StudentsPage() {
     </MDBCard>
     </div>
     </>
+  //   : <Navigate to='/login'/>
   );
 }
