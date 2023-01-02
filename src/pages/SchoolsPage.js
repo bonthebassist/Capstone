@@ -3,9 +3,6 @@ import {
   MDBCard,
   MDBCardBody,
   MDBCardTitle,
-  MDBCardText,
-  MDBBtn,
-  MDBBtnGroup,
   MDBIcon
 } from 'mdb-react-ui-kit';
 import { useNavigate } from "react-router-dom";
@@ -13,29 +10,49 @@ import DashboardElements from './DashboardPage';
 import {AuthContext} from '../context/AuthProvider';
 import axios from 'axios';
 
+
 export default function SchoolsPage() {
-  const [schoolsData, setSchoolsData] = useState({})
+  //Auth Context and School Data State
+  const {auth, setAuth} = useContext(AuthContext)
+  const [schoolsData, setSchoolsData] = useState([])
   
+  //hooks
   const navigate = useNavigate();
-  
+
+  //handle click from school card
   function handleClick(path) {
     navigate(path);
   }
-  const {auth, setAuth} = useContext(AuthContext)
-  console.log(auth.email)
+
 
   useEffect(() => {
-    axios.get(`http://localhost:3500/user/getSchools?email=${auth.email}`)
+    const loggedInUser = localStorage.getItem("user");
+    console.log(loggedInUser)
+    if (loggedInUser) {
+      const foundUser = loggedInUser;
+      setAuth(JSON.parse(foundUser));
+      console.log(auth.email)
+    }
+  }, []);
+
+  useEffect(() => {
+    const config = {
+      headers:{
+        'Content-type': 'application/json',
+        'x-access-token': auth.token
+      }
+    };
+    axios.get(`http://localhost:4001/schools?email=${auth.email}`, config)
     .then((resp) => {
-      console.log(resp.data)
       setSchoolsData(resp.data)
     })
-  }, [])
+  }, [auth])
 
+  //dynamically create cards based on user data
   let cardsMap = schoolsData.map((school)=>{
     let card = (
       <MDBCard className='school-card'>
-      <MDBCardBody onClick={() => handleClick(`DisplaySchool`)}>
+      <MDBCardBody onClick={() => handleClick(`/DisplaySchool/${school.schoolName}`)}>
       <MDBCardTitle className='school-card-title'>{school.schoolName}</MDBCardTitle>
       </MDBCardBody>
     </MDBCard>
@@ -48,21 +65,18 @@ export default function SchoolsPage() {
     <DashboardElements/>
     <div className='content-div'>
     <h4>Welcome back!</h4>
-    <p> you are signed in as: {auth.email}</p>
+    <p> You are signed in as: {auth.email}</p>
       <link
         href="https://use.fontawesome.com/releases/v5.15.1/css/all.css"
         rel="stylesheet"
     	/>
-    {/* {cardsMap} */}
-
+    { schoolsData ? cardsMap : null}
     <MDBCard className='add-card' >
       <MDBCardBody onClick={() => handleClick(`NewSchoolForm`)}> 
-      <MDBCardTitle> <MDBIcon fas icon="plus" />Add a School</MDBCardTitle>
+      <MDBCardTitle> <MDBIcon fas icon="plus" /> Add a School</MDBCardTitle>
       </MDBCardBody>
     </MDBCard>
-
     </div>
     </>
   )
 }
-{/* <MDBIcon fas icon="plus" /> */}

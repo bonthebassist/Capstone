@@ -1,20 +1,21 @@
-import React, { useState, useContext } from 'react';
+import React, { useState, useContext, useEffect } from 'react';
 import { Navigate } from 'react-router-dom';
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
-import SchoolColorPicker from './SchoolColorPicker';
+import { CirclePicker } from 'react-color';
 import axios from 'axios';
 import {AuthContext} from '../context/AuthProvider';
 
 export default function NewSchoolForm() {
-  const {auth, setAuth} = useContext(AuthContext)
-  console.log(auth.email)
+  const {auth} = useContext(AuthContext)
+  
     const [School, setSchool] = useState({schoolName: ''})
     const [UsefulLinks, setUsefulLinks] = useState([])
     const [SchoolAdminDetails, setSchoolAdminDetails] = useState({
         "title": null,
         "email": null
     })
+    const [SchoolColor, setSchoolColor] = useState('')
     const [success, setSuccess] = useState(false);
 
     const reqBody = 
@@ -34,11 +35,19 @@ export default function NewSchoolForm() {
             ],
         "students":[]
     }
-    console.log(reqBody)
-  
+    
+    const config = {
+      headers:{
+        'Content-type': 'application/json',
+        'x-access-token': auth.token
+      }
+    };
+
+    const url = `http://localhost:4001/schools?email=${auth.email}`;
+
       const handleClick = (e) => {
         e.preventDefault()
-        axios.put(`http://localhost:3500/user/addSchool?email=${auth.email}`, reqBody)
+        axios.post(url, reqBody, config)
               .then(response => {
                   console.log(response.data)
                   setSuccess(true);
@@ -47,6 +56,10 @@ export default function NewSchoolForm() {
                   alert(error)
               })
       }
+    
+    useEffect(() => {
+      console.log(SchoolColor)
+    },[SchoolColor])
 
   return (
     <>
@@ -100,7 +113,8 @@ export default function NewSchoolForm() {
         </Form.Group>
         <Form.Group>
             <Form.Label>Pick a colour for your school</Form.Label>
-            <SchoolColorPicker/>
+            <CirclePicker 
+            onChange={e => setSchoolColor(e.target.value)}/>
         </Form.Group>
       <Button variant="dark" className="button" type="submit" onClick={handleClick}>
         Submit

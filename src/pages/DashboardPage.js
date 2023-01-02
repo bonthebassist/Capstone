@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext, useLocation } from 'react';
+import React, { useState, useEffect, useLocation } from 'react';
 import {
   MDBContainer,
   MDBNavbar,
@@ -7,7 +7,6 @@ import {
   MDBIcon,
   MDBNavbarNav,
   MDBNavbarItem,
-  MDBNavbarLink,
   MDBDropdown,
   MDBDropdownToggle,
   MDBDropdownMenu,
@@ -15,16 +14,13 @@ import {
   MDBDropdownLink,
   MDBCollapse,
   MDBRipple,
-  MDBBadge,
-  MDBInput,
   MDBListGroup, 
   MDBListGroupItem
 } from 'mdb-react-ui-kit';
 
-import SchoolsPage from './SchoolsPage';
 import HorizontalLogo from '../Chuta-logo-horizontal-01.svg'
 import {NavLink} from 'react-router-dom'
-// import { ScreenContext } from './App'; 
+
 
 export default function DashboardElements() {
   const [showShow, setShowShow] = useState(false);
@@ -32,7 +28,6 @@ export default function DashboardElements() {
   const [lastName, setLastName] = useState("Smith");
   const [avatarURL, setAvatarURL] = useState('');
   const [active, setActive] = useState(false)
-  // const {setScreenContext} = useContext(ScreenContext)
 
   const toggleShow = () => setShowShow(!showShow);
 
@@ -43,13 +38,9 @@ export default function DashboardElements() {
     }
   }
 
-  
-  // setScreenContext(showShow)
-  // console.log(ScreenContext)
-
   useEffect(() => {
     setAvatarURL(`https://ui-avatars.com/api/?name=${firstName}+${lastName}&size=128`)
-  })
+  }, [firstName, lastName])
 
   return (
     <>
@@ -127,18 +118,18 @@ export default function DashboardElements() {
             <MDBNavbarItem className='me-3 me-lg-0 d-flex align-items-center'>
               <MDBDropdown>
 
-                <MDBDropdownToggle tag="a" href="#!" className="hidden-arrow nav-link">
+                <MDBDropdownToggle tag="a" className="hidden-arrow nav-link">
                   <img src={avatarURL} className="rounded-circle" height="50" alt="" loading="lazy" />
                 </MDBDropdownToggle>
 
                 <MDBDropdownMenu>
                   <MDBDropdownItem>
                     <NavLink to="/MyDetails">
-                      <MDBDropdownLink href="#">My Details</MDBDropdownLink>
+                      <MDBDropdownLink>My Details</MDBDropdownLink>
                     </NavLink>
                   </MDBDropdownItem>
                   <MDBDropdownItem>
-                    <MDBDropdownLink href="#">Logout</MDBDropdownLink>
+                    <MDBDropdownLink>Logout</MDBDropdownLink>
                   </MDBDropdownItem>
                 </MDBDropdownMenu>
               </MDBDropdown>

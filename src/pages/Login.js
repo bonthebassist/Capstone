@@ -2,22 +2,19 @@ import React from 'react'
 import { NavLink } from 'react-router-dom';
 import { useRef, useState, useEffect, useContext } from 'react'
 import {AuthContext} from "../context/AuthProvider"
-import axios from '../api/axios';
-// import { NavLink } from 'react-bootstrap';
-import DashboardElements from './DashboardPage';
+import axios from 'axios';
 import { Navigate } from 'react-router-dom';
 
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import { Container } from 'react-bootstrap';
 
-const LOGIN_URL = './users/login';
-
 function Login() {
-  const { setAuth } = useContext(AuthContext)
+  const { auth, setAuth } = useContext(AuthContext)
   const userRef = useRef();
   const errRef = useRef();
 
+  const [user, setUser] = useState();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [errMsg, setErrMsg] = useState('');
@@ -34,18 +31,24 @@ function Login() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post(LOGIN_URL,
+      const response = await axios.post('http://localhost:4001/login',
         {email: email, password: password},
         {
           headers: { 'Context-Type': 'application/json'},
           withCredentials: true
         }
         );
-      console.log(JSON.stringify(response?.data));
-      setAuth({ email: email, password: password})
+
+        let userStuff = {"email":response.data.email, "token":response.data.token}
+        localStorage.setItem('user', JSON.stringify(userStuff))
+
+      const token = response?.data?.token
+      setAuth({ email: email, password: password, token: token})
       setEmail('');
       setPassword('');
       setSuccess(true);
+
+      
     } catch (err) {
       if (!err?.response) {
         setErrMsg('No Server Response')
@@ -93,31 +96,6 @@ function Login() {
               onChange={(e) => setPassword(e.target.value)}
               required />
             </Form.Group>
-            {/* <Form.Group>
-              <Form.Check
-              type="checkbox"
-              label="Remember me for 30 days"
-              onChange={(e) => setEmail(e.target.value)}/>
-            </Form.Group> */}
-            {/* <label htmlFor="email">Email:</label>
-            <input
-              type="email"
-              name="email"
-              ref={userRef}
-              // autoComplete="off"
-              onChange={(e) => setEmail(e.target.value)}
-              value={email}
-              required
-            /> */}
-            {/* <label htmlFor="password">Password:</label>
-            <input
-              type="password"
-              id="password"
-              name="password"
-              onChange={(e) => setPassword(e.target.value)}
-              value={password}
-              required
-            /> */}
             <Button type="submit">Sign In</Button>
           </Form>
           <p>

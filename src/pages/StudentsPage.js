@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import {
   MDBCard,
   MDBCardBody,
@@ -9,22 +9,23 @@ import {
   MDBInput,
   MDBIcon
 } from 'mdb-react-ui-kit';
-import { Navigate, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import DashboardElements from './DashboardPage';
+import {AuthContext} from '../context/AuthProvider';
+
 
 export default function StudentsPage() {
-  // const currentUser = useAuth();
-
-  // if (currentUser === undefined) return (<h1>user not found</h1>)
-
   const navigate = useNavigate();
   
   function handleClick(path) {
     navigate(path);
   }
+
+  const {auth} = useContext(AuthContext)
+  console.log(auth.token)
+
+
   return (
-    // currentUser
-    // ?
     <>
     <DashboardElements/>
     <div className='content-div'>
@@ -53,6 +54,5 @@ export default function StudentsPage() {
     </MDBCard>
     </div>
     </>
-  //   : <Navigate to='/login'/>
   );
 }
