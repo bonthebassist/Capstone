@@ -13,7 +13,7 @@ import axios from 'axios';
 
 export default function SchoolsPage() {
   //Auth Context and School Data State
-  const {auth, setAuth} = useContext(AuthContext)
+  const {auth} = useContext(AuthContext)
   const [schoolsData, setSchoolsData] = useState([])
   
   //hooks

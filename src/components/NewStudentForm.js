@@ -194,6 +194,7 @@ export default function NewSchoolForm() {
       </Button>
     </Form>
     <h2>Back to <NavLink to="/Schools">Schools</NavLink></h2>
+    <h2>Back to <NavLink to="/Students">Students</NavLink></h2>
 
     </div>
     </>

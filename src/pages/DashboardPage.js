@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useLocation } from 'react';
+import React, { useState, useEffect, useLocation, useContext } from 'react';
 import {
   MDBContainer,
   MDBNavbar,
@@ -20,27 +20,43 @@ import {
 
 import HorizontalLogo from '../Chuta-logo-horizontal-01.svg'
 import {NavLink} from 'react-router-dom'
+import axios from 'axios';
+import {AuthContext} from '../context/AuthProvider';
 
 
 export default function DashboardElements() {
+  const {auth} = useContext(AuthContext)
   const [showShow, setShowShow] = useState(false);
-  const [firstName, setFirstName] = useState("John");
-  const [lastName, setLastName] = useState("Smith");
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
   const [avatarURL, setAvatarURL] = useState('');
   const [active, setActive] = useState(false)
 
   const toggleShow = () => setShowShow(!showShow);
 
-  let location = useLocation
-  const setActiveLocation = () => {
-    if (location === useLocation){
-      setActive(!active)
-    }
-  }
+  // let location = useLocation
+  // const setActiveLocation = () => {
+  //   if (location === useLocation){
+  //     setActive(!active)
+  //   }
+  // }
 
   useEffect(() => {
-    setAvatarURL(`https://ui-avatars.com/api/?name=${firstName}+${lastName}&size=128`)
-  }, [firstName, lastName])
+    const config = {
+      headers:{
+        'Content-type': 'application/json',
+        'x-access-token': auth.token
+      }
+    };
+    axios.get(`http://localhost:4001/user?email=${auth.email}`, config)
+    .then((resp) => {
+      console.log(resp.data)
+      setFirstName(resp.data.firstName)
+      setLastName(resp.data.lastName)
+      setAvatarURL(`https://ui-avatars.com/api/?name=${firstName}+${lastName}&size=128`)
+    })
+    
+  })
 
   return (
     <>
@@ -54,7 +70,7 @@ export default function DashboardElements() {
 
             <MDBRipple rippleTag='span'>
               <NavLink to='/Schools'>
-              <MDBListGroupItem href='#' action className='border-0 border-bottom rounded' active={setActiveLocation} aria-current='true'>
+              <MDBListGroupItem href='#' action className='border-0 border-bottom rounded' active={setActive} aria-current='true'>
                 <MDBIcon fas icon="school me-3" />
                 Schools
               </MDBListGroupItem>
@@ -63,7 +79,7 @@ export default function DashboardElements() {
 
             <MDBRipple rippleTag='span'>
             <NavLink to='/Students'>
-              <MDBListGroupItem href='#' action className='border-0 border-bottom rounded' active={setActiveLocation}>
+              <MDBListGroupItem href='#' action className='border-0 border-bottom rounded' active={setActive}>
                 <MDBIcon fas icon="users me-3" />
                 Students
               </MDBListGroupItem>
@@ -72,7 +88,7 @@ export default function DashboardElements() {
 
             <MDBRipple rippleTag='span'>
             <NavLink to='/Attendance'>
-              <MDBListGroupItem href='#' action className='border-0 border-bottom rounded'active={setActiveLocation}>
+              <MDBListGroupItem href='#' action className='border-0 border-bottom rounded'active={setActive}>
                 <MDBIcon fas icon="table me-3" />
                 Attendance
               </MDBListGroupItem>
@@ -81,7 +97,7 @@ export default function DashboardElements() {
 
             <MDBRipple rippleTag='span'>
             <NavLink to='/Invoice'>
-              <MDBListGroupItem href='#' action className='border-0 border-bottom rounded' active={setActiveLocation}>
+              <MDBListGroupItem href='#' action className='border-0 border-bottom rounded' active={setActive}>
                 <MDBIcon fas icon="file-invoice-dollar me-3" />
                 Invoice
               </MDBListGroupItem>

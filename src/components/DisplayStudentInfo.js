@@ -23,25 +23,13 @@ export default function DisplayStudentInfo() {
         diaryEntry:''
     })
 
+    const schoolDate = attendanceDoc.schoolDate
     const showForm = () => {
         if (!showShow) {
             setShowShow(true)
         }
     }
 
-    const showAttendanceDoc = (e) => {
-        e.preventDefault()
-        console.log(attendanceDoc)
-    }
-    //for getting auth
-    useEffect(() => {
-        const loggedInUser = localStorage.getItem("user");
-        if (loggedInUser) {
-            const foundUser = loggedInUser;
-            setAuth(JSON.parse(foundUser));
-            console.log(auth.email, auth.token)
-        }
-    }, []);
     //for getting studentDoc
     useEffect(() => {
         if (auth.token) {
@@ -79,7 +67,7 @@ export default function DisplayStudentInfo() {
     let reqBody = {
         studentFirstName: nameArray[0],
         studentLastName: nameArray[1],
-        schoolDate: ("T" + Term.termNo + Term.yearNo), //transform into this state
+        schoolDate: schoolDate, //transform into this state
         termLength: Term.termLength, //number input filed
         attendanceArray: [],
         diaryEntryArray: [],
@@ -112,6 +100,21 @@ export default function DisplayStudentInfo() {
 
     const handleEntry = (e) => {
         e.preventDefault()
+        let reqBodyAtt = {
+            studentFirstName:nameArray[0],
+            studentLastName:nameArray[1],
+            schoolDate:attendanceDoc.schoolDate,
+            attendance: entry.attendance,
+            diaryEntry: entry.diaryEntry
+        }
+        axios.post(`http://localhost:4001/attendance?email=${auth.email}`, reqBodyAtt, config)
+            .then(response => {
+                console.log(response.data)
+                // setSuccess(true);
+            }).catch(error => {
+                console.log(error)
+                alert(error)
+            })
     }
 
     return (
@@ -166,7 +169,7 @@ export default function DisplayStudentInfo() {
                             <h4>Week {i+1}</h4>
                             <Form.Group>
                                 <Form.Label>Attendance</Form.Label>
-                                <Form.Check value="P" type="radio" label="Present" inline name={"week" + (i+1)} onClick={e => setEntry({...entry, attendance: e.target.value})} />
+                                <Form.Check value={schoolDate+"W"+(i+1)+"P"} type="radio" label="Present" inline name={"week" + (i+1)} onClick={e => setEntry({...entry, attendance: e.target.value})} />
                                 <Form.Check value="A" type="radio" label="Absent" inline name={"week" + (i+1)} onClick={e => setEntry({...entry, attendance: e.target.value})}/>
                                 <Form.Check value="EA" type="radio" label="Excused Absence" inline name={"week" + (i+1)} onClick={e => setEntry({...entry, attendance: e.target.value})}/>
                                 <Form.Check value="L" type="radio" label="Late" inline name={"week" + (i+1)} onClick={e => setEntry({...entry, attendance: e.target.value})}/>
@@ -174,7 +177,7 @@ export default function DisplayStudentInfo() {
                             </Form.Group>
                             <Form.Group key={i}>
                                 <Form.Label>Lesson notes:</Form.Label>
-                                <Form.Control as="textarea" rows={1} onChange={e => {setEntry({...entry, diaryEntry: e.target.value})}}></Form.Control>
+                                <Form.Control as="textarea" rows={1} onChange={e => {setEntry({...entry, diaryEntry: e.target.value + "%"+ (schoolDate+"W"+(i+1)+"P")})}}></Form.Control>
                             </Form.Group>
                             {entry.attendance 
                             ? 
@@ -188,11 +191,6 @@ export default function DisplayStudentInfo() {
                     )}</Form>
                 </>
             )}
-            <Form id="diary-form">
-                {/* {students} */}
-            </Form>
-            {/* {!studentDoc?null: <p>{studentDoc.studentFirstName}</p>} */}
-            <Button onClick={showAttendanceDoc}>See Previous Weeks</Button>
         </div>
     )
 }
