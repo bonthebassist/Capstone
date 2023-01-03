@@ -48,7 +48,7 @@ function DisplaySchoolInfo() {
   const schoolName = params.schoolName
   const {auth, setAuth} = useContext(AuthContext)
   const [schoolsData, setSchoolsData] = useState()
-
+  const [studentData, setStudentData] = useState()
   const navigate = useNavigate();
   
   function handleClick(path) {
@@ -77,34 +77,67 @@ function DisplaySchoolInfo() {
     axios.get(`http://localhost:4001/schools?email=${auth.email}`, config)
     .then((resp) => {
       console.log(resp.data)
-      setSchoolsData(resp.data)
+      let schoolsArray = resp.data
+      let currentSchoolObj = schoolsArray.filter(function (el){
+       return el.schoolName === schoolName
+      })
+      console.log(currentSchoolObj[0])
+      setSchoolsData(currentSchoolObj[0])
     })
   }}, [auth])
 
-  
+  useEffect(() => {
+    if (auth.token){
+    const config = {
+      headers:{
+        'Content-type': 'application/json',
+        'x-access-token': auth.token
+      }
+    };
+    axios.get(`http://localhost:4001/students?email=${auth.email}&school=${schoolName}`, config)
+    .then((resp) => {
+      console.log(resp.data)
+      setStudentData(resp.data)
+    })
+  }}, [auth])
+
+
   return (
+    <>
+    {!schoolsData ? null : (
     <div>
         <h2>{schoolName}</h2>
         <Button>Contact admin</Button>
         <h4>Quick Links</h4>
-        <a href={schoolsData[0].usefulLinks[0].linkURL}>{schoolsData[0].usefulLinks[0].linkTitle}</a>
+        <a href={schoolsData.usefulLinks[0].linkURL}>{schoolsData.usefulLinks[0].linkTitle}</a>
         <h4>Attendance</h4>
         <table></table>
-        <h4>Music Diaries</h4>
+        <h4>Students</h4>
+        {studentData ? studentData.map((student)=>{
+        return (
         <CardGroup>
-          <Card>
-            <Card.Body>
-              Clickable Student Cards
+          <Card className='student-card'>
+            <Card.Body className='student-card-title' onClick={() => handleClick(`/DisplayStudent/${student.studentFirstName}`)}>
+              {student.studentFirstName} {student.studentLastName}
             </Card.Body>
+            <Card.Footer className='student-card-footer'>
+              <button className='student-card-button'>Late</button> //opens email dialog to student cc parents
+              <button className='student-card-button'>Absent</button> //opens email dialog to parents cc student
+              <button className='student-card-button'>Edit</button> //takes to edit student form
+              <button className='student-card-button'>Delete</button> //opens modal - are you sure? then deletes from database
+            </Card.Footer>
           </Card>
         </CardGroup>
-
+        )
+      }):null}
         <Card className='add-card' >
           <Card.Body onClick={() => handleClick(`/Students/NewStudent`)}> 
           <Card.Title> <MDBIcon fas icon="plus" /> Add a Student</Card.Title>
           </Card.Body>
         </Card>
     </div>
+    ) }
+    </>
   )
 }
 

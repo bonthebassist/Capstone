@@ -34,6 +34,9 @@ function App() {
         <Route path='/DisplaySchool' element={<DisplaySchool />}>
           <Route path=':schoolName' element={<DisplaySchoolInfo />} />
         </Route>
+        <Route path='/DisplayStudent' element={<DisplayStudent />}>
+          <Route path=':studentName' element={<DisplayStudentInfo />} />
+        </Route>
         <Route path='/Schools/Diaries/AshleyK' element={<TermDiary />} />
         <Route path='/Students/NewStudent' element={<NewStudentForm />} />
       </Routes>

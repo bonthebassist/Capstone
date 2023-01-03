@@ -148,3 +148,22 @@ body {
   background-color: rgb(93, 165, 93);
   color:white;
 }
+
+.student-card {
+  min-height: 70px;
+}
+.student-card-button {
+  text-align: right;
+  font-size: small;
+}
+.student-card :hover{
+  background-color: #0d6efd;
+  color:white
+}
+
+.student-card-title {
+  font-size: 1.5em;
+}
+
+.student-card-footer {
+}
