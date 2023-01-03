@@ -10,8 +10,9 @@ import NewSchoolForm from './components/NewSchoolForm';
 import NewStudentForm from './components/NewStudentForm';
 import DisplaySchool from './components/DisplaySchool';
 import DisplaySchoolInfo from './components/DisplaySchoolInfo';
-import TermDiary from './components/TermDiary';
 import MyDetailsPage from './pages/MyDetailsPage';
+import DisplayStudent from './components/DisplayStudent';
+import DisplayStudentInfo from './components/DisplayStudentInfo';
 
 import Login from './pages/Login';
 import Register from './pages/Register'
@@ -37,7 +38,6 @@ function App() {
         <Route path='/DisplayStudent' element={<DisplayStudent />}>
           <Route path=':studentName' element={<DisplayStudentInfo />} />
         </Route>
-        <Route path='/Schools/Diaries/AshleyK' element={<TermDiary />} />
         <Route path='/Students/NewStudent' element={<NewStudentForm />} />
       </Routes>
     </main>

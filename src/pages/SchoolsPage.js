@@ -26,16 +26,6 @@ export default function SchoolsPage() {
 
 
   useEffect(() => {
-    const loggedInUser = localStorage.getItem("user");
-    console.log(loggedInUser)
-    if (loggedInUser) {
-      const foundUser = loggedInUser;
-      setAuth(JSON.parse(foundUser));
-      console.log(auth.email)
-    }
-  }, []);
-
-  useEffect(() => {
     const config = {
       headers:{
         'Content-type': 'application/json',
@@ -46,7 +36,7 @@ export default function SchoolsPage() {
     .then((resp) => {
       setSchoolsData(resp.data)
     })
-  }, [auth])
+  }, [])
 
   //dynamically create cards based on user data
   let cardsMap = schoolsData.map((school)=>{

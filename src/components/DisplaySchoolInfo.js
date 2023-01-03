@@ -2,69 +2,21 @@ import React from 'react'
 import { useEffect, useState, useContext } from 'react'
 import { useNavigate } from 'react-router-dom'
 import {useParams} from 'react-router-dom'
-import { MDBBtn } from 'mdb-react-ui-kit'
 import { Button, Card, CardGroup } from 'react-bootstrap'
 import axios from 'axios'
 import {AuthContext} from '../context/AuthProvider';
 import {  MDBIcon } from 'mdb-react-ui-kit';
 
-const SCHOOL_DATA = [
-  {
-    "schoolName": "Surry Hills",
-    "schoolAdminDetails": [
-      {
-        "title": "Kim",
-        "email": "kim@surryhills.com"
-      }
-    ],
-    "usefulLinks": [
-      {
-        "linkTitle": "Surry Timetable",
-        "linkURL": "www.surrytimetable.com"
-      }
-    ],
-    "students": []
-  },
-  {
-    "schoolName": "The Heights",
-    "schoolAdminDetails": [
-      {
-        "title": "Penny",
-        "email": "penny@theheights.com"
-      }
-    ],
-    "usefulLinks": [
-      {
-        "linkTitle": "The Heights Timetable",
-        "linkURL": "www.theheights.com/timetable"
-      }
-    ],
-    "students": []
-  }
-]
-
 function DisplaySchoolInfo() {
   const params = useParams();
   const schoolName = params.schoolName
-  const {auth, setAuth} = useContext(AuthContext)
+  const {auth} = useContext(AuthContext)
   const [schoolsData, setSchoolsData] = useState()
   const [studentData, setStudentData] = useState()
   const navigate = useNavigate();
-  
-  function handleClick(path) {
-    navigate(path);
-  }
 
-  
-  useEffect(() => {
-    const loggedInUser = localStorage.getItem("user");
-    if (loggedInUser) {
-      const foundUser = loggedInUser;
-      // console.log(loggedInUser)
-      setAuth(JSON.parse(foundUser));
-      console.log(auth.email, auth.token)
-    }
-  }, []);
+  function handleClick(path) { navigate(path);}
+
 
   useEffect(() => {
     if (auth.token){
@@ -117,7 +69,7 @@ function DisplaySchoolInfo() {
         return (
         <CardGroup>
           <Card className='student-card'>
-            <Card.Body className='student-card-title' onClick={() => handleClick(`/DisplayStudent/${student.studentFirstName}`)}>
+            <Card.Body className='student-card-title' onClick={() => handleClick(`/DisplayStudent/${student.studentFirstName+" "+student.studentLastName}`)}>
               {student.studentFirstName} {student.studentLastName}
             </Card.Body>
             <Card.Footer className='student-card-footer'>

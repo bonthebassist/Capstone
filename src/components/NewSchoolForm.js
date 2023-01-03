@@ -61,15 +61,6 @@ export default function NewSchoolForm() {
     setSchoolColor(color.hex)
   }
 
-  useEffect(() => {
-    const loggedInUser = localStorage.getItem("user");
-    if (loggedInUser) {
-      const foundUser = loggedInUser;
-      // console.log(loggedInUser)
-      setAuth(JSON.parse(foundUser));
-      console.log(auth.email, auth.token)
-    }
-  }, []);
 
   return (
     <>

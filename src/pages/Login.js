@@ -43,7 +43,7 @@ function Login() {
         localStorage.setItem('user', JSON.stringify(userStuff))
 
       const token = response?.data?.token
-      setAuth({ email: email, password: password, token: token})
+      setAuth({ email: email, token: token})
       setEmail('');
       setPassword('');
       setSuccess(true);

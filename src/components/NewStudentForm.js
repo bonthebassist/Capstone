@@ -28,18 +28,6 @@ export default function NewSchoolForm() {
     })
 
     useEffect(() => {
-      const loggedInUser = localStorage.getItem("user");
-      console.log(loggedInUser)
-      console.log("Inside ")
-      if (loggedInUser) {
-        const foundUser = loggedInUser;
-        console.log(foundUser)
-        setAuth(JSON.parse(foundUser));
-      }
-    }, []);
-  
-
-    useEffect(() => {
       if(auth.token){
       const config = {
         headers:{
@@ -55,7 +43,7 @@ export default function NewSchoolForm() {
         setSchoolsData(resp.data)
         // console.log(schoolsData)
       })
-    }}, [auth])
+    }}, [])
 
     const reqBody = 
       { 
@@ -93,7 +81,6 @@ export default function NewSchoolForm() {
                     alert(error)
                 })
       }
-      // setStudent({...Student, school: e.target.value })
 
 
   return (
