@@ -51,6 +51,7 @@ export default function AttendancePage() {
 
   // populate attendanceData once FIND button is clicked
   const populateTables = () => {
+    setAttendanceData([])
     const config = {
       headers:{
         'Content-type': 'application/json',
@@ -121,7 +122,7 @@ export default function AttendancePage() {
                       <tr>
                         <th scope='row'>{attendanceObj.studentFirstName} {attendanceObj.studentLastName}</th>
                         {attendanceObj.attendanceArray.map((entry, i) => {
-                          return <td key={entry + i}>{entry.slice(-1)}</td>
+                          return <td key={entry + i}>{entry.slice(8)}</td>
                         })}
                         <td style={{ fontWeight: 'bold', textAlign: 'center' }}>{attendanceObj.lessonCount}</td>
                         <td style={{ textAlign: 'center' }}>{attendanceObj.goalLessonCount}</td>
@@ -133,7 +134,7 @@ export default function AttendancePage() {
             )
           })
         }
-      </div>
+        </div>
     </>
   );
 }

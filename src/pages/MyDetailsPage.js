@@ -26,11 +26,11 @@ export default function MyDetailsPage() {
       console.log(resp.data)
       let schoolsArray = resp.data.schools
       let schoolNamesArray = schoolsArray.map((school)=>{return school.schoolName + ", "})
-      setUserDetails({...userDetails, schools:schoolNamesArray})
       setUserDetails({...userDetails, 
         firstName: resp.data.firstName,
         lastName: resp.data.lastName,
-        email: resp.data.email
+        email: resp.data.email,
+        schools:schoolNamesArray
       })
 
     })
