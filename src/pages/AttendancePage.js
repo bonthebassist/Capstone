@@ -5,7 +5,7 @@ import { AuthContext } from '../context/AuthProvider';
 import { useNavigate } from 'react-router-dom';
 import { useContext, useEffect, useState } from 'react';
 import axios from 'axios'
-import { ButtonGroup, Button, Form } from 'react-bootstrap';
+import { Button, Form } from 'react-bootstrap';
 
 export default function AttendancePage() {
   const { auth } = useContext(AuthContext)
@@ -20,14 +20,15 @@ export default function AttendancePage() {
   function handleClick(path) { navigate(path); }
   
   //config for API calls
-  const config = {
-    headers: {
-      'Content-type': 'application/json',
-      'x-access-token': auth.token
-    }
-  };
+
   //get schools inorder to make next API call
   useEffect(() => {
+    const config = {
+      headers:{
+        'Content-type': 'application/json',
+        'x-access-token': auth.token
+      }
+    };
     axios.get(`http://localhost:4001/user?email=${auth.email}`, config)
       .then((resp) => {
         let schoolsArray = resp.data.schools
@@ -35,7 +36,7 @@ export default function AttendancePage() {
         console.log(schoolNamesArray)
         setSchools(schoolNamesArray)
       });
-  }, [auth])
+  }, [auth.token, auth.email])
   //populate attendanceData state
   // useEffect(() => {
   //   console.log("seoncd useEffect: " + auth.token)
@@ -50,6 +51,12 @@ export default function AttendancePage() {
 
   // populate attendanceData once FIND button is clicked
   const populateTables = () => {
+    const config = {
+      headers:{
+        'Content-type': 'application/json',
+        'x-access-token': auth.token
+      }
+    };
     const schoolDate = "T" +selectedTerm+selectedYear
     console.log(schoolDate)
     for (let i in schools) {

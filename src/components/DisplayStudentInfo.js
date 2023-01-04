@@ -45,7 +45,7 @@ export default function DisplayStudentInfo() {
                     setStudentDoc(resp.data[0])
                 })
         }
-    }, [])
+    }, [auth.token, auth.email, nameArray])
     //for getting attendanceDoc
     useEffect(() => {
         if (auth.token) {
@@ -61,7 +61,7 @@ export default function DisplayStudentInfo() {
                     setAttendanceDoc(resp.data[0])
                 })
         }
-    }, [])
+    }, [auth.token, auth.email, nameArray])
 
     //reqBody for making a term
     let reqBody = {
@@ -164,7 +164,7 @@ export default function DisplayStudentInfo() {
             {!attendanceDoc ? null : (
                 <>
                     <h2>{attendanceDoc.schoolDate}</h2>
-                    <Form>{[...Array(0,1,2,3,4,5,6,7,8,9)].map((i) =>
+                    <Form>{[0,1,2,3,4,5,6,7,8,9].map((i) =>
                         <>
                             <h4>Week {i+1}</h4>
                             <Form.Group>

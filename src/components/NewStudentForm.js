@@ -28,7 +28,6 @@ export default function NewSchoolForm() {
     })
 
     useEffect(() => {
-      if(auth.token){
       const config = {
         headers:{
           'Content-type': 'application/json',
@@ -41,9 +40,8 @@ export default function NewSchoolForm() {
         console.log("Useeffect for schoolsData")
         console.log(resp.data)
         setSchoolsData(resp.data)
-        // console.log(schoolsData)
       })
-    }}, [])
+    }, [auth.token, auth.email])
 
     const reqBody = 
       { 

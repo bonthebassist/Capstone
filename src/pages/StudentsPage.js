@@ -37,7 +37,7 @@ export default function StudentsPage() {
       console.log(resp.data)
       setStudentData(resp.data)
     })
-  }, [])
+  }, [auth.email, auth.token])
 
   //dynamically create cards based on user data
   let cardsMap = studentData.map((student)=>{

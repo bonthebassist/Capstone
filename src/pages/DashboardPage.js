@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useLocation, useContext } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import {
   MDBContainer,
   MDBNavbar,
@@ -56,7 +56,7 @@ export default function DashboardElements() {
       setAvatarURL(`https://ui-avatars.com/api/?name=${firstName}+${lastName}&size=128`)
     })
     
-  })
+  }, [auth.email, auth.token, firstName, lastName])
 
   return (
     <>

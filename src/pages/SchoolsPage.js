@@ -36,7 +36,7 @@ export default function SchoolsPage() {
     .then((resp) => {
       setSchoolsData(resp.data)
     })
-  }, [])
+  }, [auth.email, auth.token])
 
   //dynamically create cards based on user data
   let cardsMap = schoolsData.map((school)=>{

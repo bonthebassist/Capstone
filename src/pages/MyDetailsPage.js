@@ -35,7 +35,7 @@ export default function MyDetailsPage() {
 
     })
     
-  }, [])
+  }, [auth.email, auth.token, userDetails])
 
   return (
     <>
