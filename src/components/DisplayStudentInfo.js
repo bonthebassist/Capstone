@@ -170,9 +170,9 @@ export default function DisplayStudentInfo() {
                             <Form.Group>
                                 <Form.Label>Attendance</Form.Label>
                                 <Form.Check value={schoolDate+"W"+(i+1)+"P"} type="radio" label="Present" inline name={"week" + (i+1)} onClick={e => setEntry({...entry, attendance: e.target.value})} />
-                                <Form.Check value="A" type="radio" label="Absent" inline name={"week" + (i+1)} onClick={e => setEntry({...entry, attendance: e.target.value})}/>
-                                <Form.Check value="EA" type="radio" label="Excused Absence" inline name={"week" + (i+1)} onClick={e => setEntry({...entry, attendance: e.target.value})}/>
-                                <Form.Check value="L" type="radio" label="Late" inline name={"week" + (i+1)} onClick={e => setEntry({...entry, attendance: e.target.value})}/>
+                                <Form.Check value={schoolDate+"W"+(i+1)+"A"} type="radio" label="Absent" inline name={"week" + (i+1)} onClick={e => setEntry({...entry, attendance: e.target.value})}/>
+                                <Form.Check value={schoolDate+"W"+(i+1)+"E"} type="radio" label="Excused Absence" inline name={"week" + (i+1)} onClick={e => setEntry({...entry, attendance: e.target.value})}/>
+                                <Form.Check value={schoolDate+"W"+(i+1)+"L"} type="radio" label="Late" inline name={"week" + (i+1)} onClick={e => setEntry({...entry, attendance: e.target.value})}/>
                                 <Form.Check value="" type="radio" label="None" inline name={"week" + (i+1)} onClick={e => setEntry({...entry, attendance: e.target.value})}/>
                             </Form.Group>
                             <Form.Group key={i}>
