@@ -112,17 +112,20 @@ export default function AttendancePage() {
                     <th scope='col'>8</th>
                     <th scope='col'>9</th>
                     <th scope='col'>10</th>
+                    <th scope='col'>11</th>
+                    <th scope='col'>12</th>
                     <th scope='col'>Count</th>
                     <th scope='col'>Goal</th>
                   </tr>
                 </MDBTableHead>
                 <MDBTableBody>
                   {dataArray.map((attendanceObj) => {
+                    console.log(attendanceObj.attendanceArray.sort())
                     return (
                       <tr>
                         <th scope='row'>{attendanceObj.studentFirstName} {attendanceObj.studentLastName}</th>
                         {attendanceObj.attendanceArray.map((entry, i) => {
-                          return <td key={entry + i}>{entry.slice(8)}</td>
+                          return <td key={entry + i}>{entry.slice(2)}</td>
                         })}
                         <td style={{ fontWeight: 'bold', textAlign: 'center' }}>{attendanceObj.lessonCount}</td>
                         <td style={{ textAlign: 'center' }}>{attendanceObj.goalLessonCount}</td>
