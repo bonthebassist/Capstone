@@ -74,7 +74,7 @@ export default function DisplayStudentInfo() {
     // }, [auth.token, auth.email])
 
     useEffect(() => {
-        console.log(entry.diaryEntry)
+        console.log(entry.attendance.slice(0, 2))
     }, [entry])
     const config = {
         headers: {
@@ -259,6 +259,7 @@ export default function DisplayStudentInfo() {
                                 }
                                 return (
                                     <Accordion.Item eventKey={i}>
+                                        
                                         <Accordion.Header>Week {week.slice(0, 2)}</Accordion.Header>
                                         {week.length > 2
                                             ?
@@ -266,9 +267,11 @@ export default function DisplayStudentInfo() {
                                                 <p>Attendance: {week.slice(2)}</p>
                                                 <p>Lesson Notes: {
                                                     attendanceDoc.diaryArray.length > 0 ?
-                                                    attendanceDoc.diaryArray[0][0] === i ?
                                                     attendanceDoc.diaryArray[0][1] : null
-                                                    : null
+                                                    // attendanceDoc.diaryArray.length > 0 ?
+                                                    // attendanceDoc.diaryArray[0][0] === i ?
+                                                    // attendanceDoc.diaryArray[0][1] : null
+                                                    // : null
                                                 }</p>
                                                 <ButtonGroup>
                                                     <Button>Edit</Button>

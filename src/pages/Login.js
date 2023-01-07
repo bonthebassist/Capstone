@@ -31,7 +31,7 @@ function Login() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post('http://localhost:4001/login',
+      const response = await axios.post('http://localhost:4000/post/login',
         {email: email, password: password},
         {
           headers: { 'Context-Type': 'application/json'},
@@ -69,10 +69,11 @@ function Login() {
       {success ? (
         <Navigate to="/Schools" />
       ) : (
-        <Container>
+        <Container className='form-container'>
+          
+          <Form onSubmit={handleSubmit} className='form'>
           <p ref={errRef} className={errMsg ? "errmsg" : "offscreen"} aria-live="assertive">{errMsg}</p>
           <h1>Sign In</h1>
-          <Form onSubmit={handleSubmit}>
             <Form.Group>
               <Form.Label>Email</Form.Label>
               <Form.Control
@@ -97,11 +98,12 @@ function Login() {
               required />
             </Form.Group>
             <Button type="submit">Sign In</Button>
-          </Form>
-          <p>
+            <p>
             Need An Account? <br />
             <NavLink to='/Register'>Sign Up</NavLink>
           </p>
+          </Form>
+          
         </Container>
       )}
     </>

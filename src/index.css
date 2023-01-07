@@ -54,3 +54,11 @@ a, a:visited {
 .line {
     display: inline-block;
 }
+
+.success-msg {
+    background-color: limegreen;
+    color: darkgreen;
+    font-weight: bold;
+    padding: 0.5rem;
+    margin-bottom: 0.5rem;
+}

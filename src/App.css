@@ -185,3 +185,22 @@ body {
   clear: both;
   display: table;
 }
+
+.form-container {
+  margin-top: 60px;
+  justify-content: center;
+  display: flex;
+  padding: 40px 60px 40px 60px;
+}
+
+.form {
+  width: 500px;
+  justify-self: center;
+  background-color:white;
+  padding:20px;
+  border: 2px solid black
+}
+
+.form button {
+  margin: 20px 20px 20px 0px;
+}

@@ -17,6 +17,8 @@ const Register = () => {
 
     const [lastName, setLastName] = useState('')
 
+    const [instrument, setInstrument] = useState('')
+
     const [password, setPassword] = useState('');
     const [pwdFocus, setPwdFocus] = useState(false)
     const [validPwd, setValidPwd] = useState(false);
@@ -45,8 +47,8 @@ const Register = () => {
         console.log("in the handleSubmit")
         e.preventDefault();
         try {
-            const response = await axios.post('http://localhost:4001/register',
-                { firstName: firstName, lastName: lastName, email: email, password: password },
+            const response = await axios.post('http://localhost:4000/post/register',
+                { firstName: firstName, lastName: lastName, email: email, instrument: instrument, password: password },
                 {
                     headers: { 'Content-Type': 'application/json' },
                     withCredentials: true
@@ -61,6 +63,7 @@ const Register = () => {
             setFirstName('');
             setLastName('');
             setEmail('');
+            setInstrument('')
             setPassword('');
             setMatchPwd('');
         } catch (err) {
@@ -78,15 +81,28 @@ const Register = () => {
     return (
         <>
             
-        <Container>
-            <p ref={errRef} className={errMsg ? "errmsg" : "offscreen"} aria-live="assertive">{errMsg}</p>
-            <h1>Register</h1>
-            <Form onSubmit={handleSubmit}>
+        <Container className="form-container">
+            <Form onSubmit={handleSubmit} className="form">
+                <p ref={errRef} className={errMsg ? "errmsg" : "offscreen"} aria-live="assertive">{errMsg}</p>
+                <h1>Register</h1>
+                {success ? (
+                <p className='success-msg'>
+                    <span> Successfully registered <NavLink to='/login'>Login</NavLink></span>
+                </p>
+                ) : (
+                <p>
+                    Already registered?<br />
+                    <span className="line">
+                        <Link to="/login">Login</Link>
+                    </span>
+                </p>
+                )}
                 <Form.Group>
                     <Form.Label>First Name</Form.Label>
                     <Form.Control
                     type="text"
                     name="firstName"
+                    ref={userRef}
                     onChange={(e)=> setFirstName(e.target.value)}
                     value={firstName}
                     autoFocus
@@ -97,6 +113,7 @@ const Register = () => {
                     <Form.Control
                     type="text"
                     name="lastName"
+                    ref={userRef}
                     onChange={(e)=> setLastName(e.target.value)}
                     value={lastName}
                     required 
@@ -111,6 +128,18 @@ const Register = () => {
                     autoComplete="off"
                     onChange={(e) => setEmail(e.target.value)}
                     value={email}
+                    required
+                    />
+                </Form.Group>
+                <Form.Group>
+                    <Form.Label>Instrument</Form.Label>
+                    <Form.Control
+                    type="text"
+                    name="instrument"
+                    ref={userRef}
+                    autoComplete="off"
+                    onChange={(e) => setInstrument(e.target.value)}
+                    value={instrument}
                     required
                     />
                 </Form.Group>
@@ -163,19 +192,9 @@ const Register = () => {
                 <Form.Group>
                     <Button type="submit" disabled={!firstName || !lastName || !email || !validPwd || !validMatch ? true : false}>Sign up</Button>
                 </Form.Group>
+                
             </Form>
-            {success ? (
-                <p>
-                    <span> Successfully registered <NavLink to='/login'>Login</NavLink></span>
-                </p>
-                ) : (
-                <p>
-                    Already registered?<br />
-                    <span className="line">
-                        <Link to="/login">Login</Link>
-                    </span>
-                </p>
-            )}
+
         </Container>
                 
         </>

@@ -112,8 +112,6 @@ export default function AttendancePage() {
                     <th scope='col'>8</th>
                     <th scope='col'>9</th>
                     <th scope='col'>10</th>
-                    <th scope='col'>11</th>
-                    <th scope='col'>12</th>
                     <th scope='col'>Count</th>
                     <th scope='col'>Goal</th>
                   </tr>

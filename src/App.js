@@ -17,11 +17,16 @@ import DisplayStudentInfo from './components/DisplayStudentInfo';
 import Login from './pages/Login';
 import Register from './pages/Register'
 import HomePage from './pages/HomePage';
+import NavbarBoots from './components/NavbarBoots';
 
 
 function App() {
+
+
+
   return (
     <main >
+      <NavbarBoots />
       <Routes>
         <Route path='/' element={<HomePage/>}/>
         <Route path='/Register' element={<Register />} />

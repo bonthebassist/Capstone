@@ -5,6 +5,7 @@ import Form from 'react-bootstrap/Form';
 import { CirclePicker } from 'react-color';
 import axios from 'axios';
 import { AuthContext } from '../context/AuthProvider';
+import { Container } from 'react-bootstrap';
 
 export default function NewSchoolForm() {
   const { auth, setAuth } = useContext(AuthContext)
@@ -63,9 +64,9 @@ export default function NewSchoolForm() {
 
 
   return (
-    <>
-      {!auth.email ? (
-        <h2>Please <NavLink to="/login">Login</NavLink></h2>
+    <Container>
+      {!auth.user_id ? (
+        <h2>Please <NavLink to="/Login">Login</NavLink></h2>
       ) : (
         <div className='content-div'>
           {success ? (
@@ -130,7 +131,7 @@ export default function NewSchoolForm() {
         </div>
       )
     }
-    </>
+    </Container>
   )
 }
 
