@@ -12,13 +12,14 @@ import {
   MDBTableHead,
   MDBTableBody,
 } from "mdb-react-ui-kit";
-import DashboardElements from "./DashboardPage";
+import HorizontalLogo from '../Chuta-logo-horizontal-01.svg'
+import { Icon } from '@iconify/react';
 
 export default function InvoiceLandingPage() {
   return (
     <>
-    <DashboardElements/>
     <div className="content-div">
+      <h1 id="invoice-title"><Icon icon="noto-v1:party-popper" width="100" height="100" rotate={3} />    Invoicing feature coming soon!    <Icon icon="noto-v1:party-popper" width="100" height="100" /></h1>
     <MDBContainer className="py-5">
       <MDBCard className="p-4">
         <MDBCardBody>
@@ -26,7 +27,7 @@ export default function InvoiceLandingPage() {
             <MDBRow className="d-flex align-items-baseline">
               <MDBCol xl="9">
                 <p style={{ color: "#7e8d9f", fontSize: "20px" }}>
-                  Invoice &gt; &gt; <strong>ID: #123-123</strong>
+                  Invoice No: <strong>0001</strong>
                 </p>
               </MDBCol>
               <MDBCol xl="3" className="float-end">
@@ -34,6 +35,7 @@ export default function InvoiceLandingPage() {
                   color="light"
                   ripple="dark"
                   className="text-capitalize border-0"
+                  disabled
                 >
                   <MDBIcon fas icon="print" color="primary" className="me-1" />
                   Print
@@ -42,6 +44,7 @@ export default function InvoiceLandingPage() {
                   color="light"
                   ripple="dark"
                   className="text-capitalize border-0 ms-2"
+                  disabled
                 >
                   <MDBIcon
                     far
@@ -57,14 +60,13 @@ export default function InvoiceLandingPage() {
           </MDBContainer>
           <MDBContainer>
             <MDBCol md="12" className="text-center">
-              <MDBIcon
-                fab
-                icon="mdb"
-                size="4x"
-                className="ms-0 "
-                style={{ color: "#5d9fc5" }}
+            <img
+                src={HorizontalLogo}
+                height='70'
+                alt='Chuta'
+                loading='lazy'
               />
-              <p className="pt-0">MDBootstrap.com</p>
+              <p className="pt-0">www.chuta.com</p>
             </MDBCol>
           </MDBContainer>
           <MDBRow>
@@ -72,11 +74,6 @@ export default function InvoiceLandingPage() {
               <MDBTypography listUnStyled>
                 <li className="text-muted">
                   To: <span style={{ color: "#5d9fc5" }}>John Lorem</span>
-                </li>
-                <li className="text-muted">Street, City</li>
-                <li className="text-muted">State, Country</li>
-                <li className="text-muted">
-                  <MDBIcon fas icon="phone-alt" /> 123-456-789
                 </li>
               </MDBTypography>
             </MDBCol>
@@ -89,8 +86,8 @@ export default function InvoiceLandingPage() {
                 </li>
                 <li className="text-muted">
                   <MDBIcon fas icon="circle" style={{ color: "#84B0CA" }} />
-                  <span className="fw-bold ms-1">Creation Date: </span>Jun
-                  23,2021
+                  <span className="fw-bold ms-1">Creation Date: </span>Jan
+                  10, 2023
                 </li>
                 <li className="text-muted">
                   <MDBIcon fas icon="circle" style={{ color: "#84B0CA" }} />
@@ -99,6 +96,13 @@ export default function InvoiceLandingPage() {
                     Unpaid
                   </span>
                 </li>
+              </MDBTypography>
+            </MDBCol>
+          </MDBRow>
+          <MDBRow>
+            <MDBCol>
+              <MDBTypography>
+                <h5>Term 1, 2023 Tuition</h5>
               </MDBTypography>
             </MDBCol>
           </MDBRow>
@@ -119,24 +123,17 @@ export default function InvoiceLandingPage() {
               <MDBTableBody>
                 <tr>
                   <th scope="row">1</th>
-                  <td>Pro Package</td>
-                  <td>4</td>
-                  <td>$200</td>
-                  <td>$800</td>
+                  <td>Inidivudal 30 minute lessons</td>
+                  <td>8</td>
+                  <td>$35</td>
+                  <td>$280</td>
                 </tr>
                 <tr>
                   <th scope="row">2</th>
-                  <td>Web hosting</td>
+                  <td>AMEB Grade 4 Piano Book</td>
                   <td>1</td>
                   <td>$10</td>
                   <td>$10</td>
-                </tr>
-                <tr>
-                  <th scope="row">3</th>
-                  <td>Consulting</td>
-                  <td>1 year</td>
-                  <td>$300</td>
-                  <td>$300</td>
                 </tr>
               </MDBTableBody>
             </MDBTable>
@@ -144,35 +141,39 @@ export default function InvoiceLandingPage() {
           <MDBRow>
             <MDBCol xl="8">
               <p className="ms-3">
-                Add additional notes and payment information
+                Please make payments via direct deposit to: <br />
+                Acc Name: Chuta Tutor <br />
+                BSB: 123-456 <br />
+                Acc No: 123456789 <br />
               </p>
             </MDBCol>
             <MDBCol xl="3">
               <MDBTypography listUnStyled>
                 <li className="text-muted ms-3">
-                  <span class="text-black me-4">SubTotal</span>$1110
+                  <span class="text-black me-4">SubTotal</span>$290
                 </li>
                 <li className="text-muted ms-3 mt-2">
-                  <span class="text-black me-4">Tax(15%)</span>$111
+                  <span class="text-black me-4">GST(10%)</span>$29
                 </li>
               </MDBTypography>
               <p className="text-black float-start">
                 <span className="text-black me-3"> Total Amount</span>
-                <span style={{ fontSize: "25px" }}>$1221</span>
+                <span style={{ fontSize: "25px" }}>$319</span>
               </p>
             </MDBCol>
           </MDBRow>
           <hr />
           <MDBRow>
             <MDBCol xl="10">
-              <p>Thank you for your purchase</p>
+              <p>Thank you</p>
             </MDBCol>
             <MDBCol xl="2">
               <MDBBtn
                 className="text-capitalize"
                 style={{ backgroundColor: "#60bdf3" }}
+                disabled
               >
-                Pay Now
+                Send Now
               </MDBBtn>
             </MDBCol>
           </MDBRow>

@@ -76,8 +76,10 @@ function Login() {
         <Container className='form-container'>
           
           <Form onSubmit={handleSubmit} className='form'>
-          <p ref={errRef} className={errMsg ? "errmsg" : "offscreen"} aria-live="assertive">{errMsg}</p>
+
           <h1>Sign In</h1>
+          <p ref={errRef} className={errMsg ? "errmsg" : "offscreen"} aria-live="assertive">{errMsg}</p>
+          
             <Form.Group>
               <Form.Label>Email</Form.Label>
               <Form.Control

@@ -29,6 +29,10 @@ export default function DisplayStudentInfo() {
     const [attSuccess, setAttSuccess] = useState(false)
     const [errMsg, setErrMsg] = useState('')
     const [successMsg, setSuccessMsg] = useState('')
+    const [editedStudent, setEditedStudent] = useState('')
+    const [clicked, setClicked] = useState(false)
+    const [editedAttendance, setEditedAttendance] = useState('')
+    const [clickedEditAtt, setClickedEditAtt] = useState(false)
 
     const showForm = () => {
         if (!showShow) {
@@ -37,10 +41,19 @@ export default function DisplayStudentInfo() {
             setSuccessMsg('')
         }
     }
-    function consoleEntry (){
-        console.log(entry.week)
-        console.log(entry.record)
-        console.log(entry.notes)
+
+    const clickedEdit = () => {
+        if (!clicked){
+            setClicked(true)
+        } else {
+            setClicked(false)
+        }
+        clearMsgs()
+    }
+
+    const clearMsgs = () => {
+        setSuccessMsg('')
+        setErrMsg('')
     }
     //for getting studentDoc
     useEffect(() => {
@@ -55,6 +68,7 @@ export default function DisplayStudentInfo() {
             .then((resp) => {
                 console.log(resp.data)
                 setStudentDoc(resp.data)
+                setEditedStudent(resp.data)
             })
     }, [auth.token, auth.user_id])
 
@@ -115,6 +129,14 @@ export default function DisplayStudentInfo() {
             })
     }
 
+    const submitEdit = (e) => {
+        e.preventDefault()
+        console.log(editedStudent)
+        clickedEdit()
+        setSuccessMsg('Updated student details')
+        setErrMsg('Could not update details')
+    }
+
     const populateDiary = () => {
         setShowShow(false)
         setSuccessMsg('')
@@ -146,7 +168,7 @@ export default function DisplayStudentInfo() {
     return (
         <div className='content-div'>
             <h2 className='page-title'>{nameArray[0]} {nameArray[1]}</h2>
-            {/* <CardGroup>
+            <CardGroup>
                 <Card className='add-card' >
                     <Card.Body> 
                         <Card.Title>Contact {studentDoc.parentFirstName}</Card.Title>
@@ -157,7 +179,7 @@ export default function DisplayStudentInfo() {
                         <Card.Title>Contact {studentDoc.studentFirstName}</Card.Title>
                     </Card.Body>
                 </Card>
-            </CardGroup> */}
+            </CardGroup>
             <h4>Details</h4>
             <p>
                 <strong>School</strong> {studentDoc.schoolName}<br />
@@ -167,13 +189,115 @@ export default function DisplayStudentInfo() {
                 <strong>{studentDoc.studentFirstName} Email</strong> {studentDoc.studentEmail}<br />
                 <strong>{studentDoc.parentFirstName} Email</strong> {studentDoc.parentEmail}
             </p>
+            {!clicked ? null :
+                        <>
+                        <h2>Edit student</h2>
+                        <Form onSubmit={submitEdit} className='form'>
+                          <Form.Group className="mb-3" controlId="formBasicEmail">
+                            <Form.Label>Student First Name</Form.Label>
+                            <Form.Control
+                              type="text"
+                              value={editedStudent.studentFirstName}
+                              onChange={e => setEditedStudent({ ...editedStudent, studentFirstName: e.target.value })}
+                              required
+                              autoFocus />
+                          </Form.Group>
+                          <Form.Group className="mb-3" controlId="formBasicEmail">
+                            <Form.Label>Student Last Name</Form.Label>
+                            <Form.Control
+                              type="text"
+                              value={editedStudent.studentLastName}
+                              onChange={e => setEditedStudent({ ...editedStudent, studentLastName: e.target.value })}
+                              required />
+                          </Form.Group>
+          
+                          {/* <Form.Group>
+                            <Form.Label>School</Form.Label>
+                            <Form.Select value={editedStudent.school} onChange={e => setEditedStudent({ ...editedStudent, school: e.target.value })}>
+                              <option>Choose a school</option>
+                              {schoolsData ? schoolsData.map((school) => {
+                                return (<option value={school._id + "%" + school.schoolName}>{school.schoolName}</option>)
+                              }) : null}
+                            </Form.Select>
+                          </Form.Group> */}
 
-
+                          <Form.Group className="mb-3" controlId="formBasicEmail">
+                            <Form.Label>Student School Email</Form.Label>
+                            <Form.Control
+                              type="text"
+                              value={editedStudent.studentEmail}
+                              onChange={e => setEditedStudent({ ...editedStudent, studentEmail: e.target.value })}
+                              required
+                            />
+                          </Form.Group>
+                          <Form.Group className="mb-3" controlId="formBasicEmail">
+                            <Form.Label>Year Level</Form.Label>
+                            <Form.Control
+                              type="number"
+                              value={editedStudent.yearLevel}
+                              onChange={e => setEditedStudent({ ...editedStudent, yearLevel: e.target.value })}
+                              required
+                            />
+                          </Form.Group>
+                          <Form.Group className="mb-3" controlId="formBasicEmail">
+                            <Form.Label>Instrument</Form.Label>
+                            <Form.Control
+                              type="text"
+                              value={editedStudent.instrument}
+                              onChange={e => setEditedStudent({ ...editedStudent, instrument: e.target.value })}
+                              required
+                            />
+                          </Form.Group>
+                          <Form.Group className="mb-3" controlId="formBasicEmail">
+                            <Form.Label>Parent/Caregiver First Name</Form.Label>
+                            <Form.Control
+                              type="text"
+                              value={editedStudent.parentFirstName}
+                              onChange={e => setEditedStudent({ ...editedStudent, parentFirstName: e.target.value })}
+                            />
+                          </Form.Group>
+                          <Form.Group className="mb-3" controlId="formBasicEmail">
+                            <Form.Label>Parent/Caregiver Last Name</Form.Label>
+                            <Form.Control
+                              type="text"
+                              value={editedStudent.parentLastName}
+                              onChange={e => setEditedStudent({ ...editedStudent, parentLastName: e.target.value })}
+                            />
+                          </Form.Group>
+                          <Form.Group>
+                            <Form.Label>Parent/Caregiver Email</Form.Label>
+                            <Form.Control
+                              type="email"
+                              value={editedStudent.parentEmail}
+                              onChange={e => setEditedStudent({ ...editedStudent, parentEmail: e.target.value })}
+                            />
+                          </Form.Group>
+                          <Form.Group>
+                            <Form.Label>Lesson Duration/type</Form.Label>
+                            <Form.Check type="radio" value="Individual 30 minutes" label="Individual 30 minutes" name="lessontype" onClick={e => setEditedStudent({ ...editedStudent, lessonType: e.target.value })} />
+                            <Form.Check type="radio" value="Individual 45 minutes" label="Individual 45 minutes" name="lessontype" onClick={e => setEditedStudent({ ...editedStudent, lessonType: e.target.value })} />
+                            <Form.Check type="radio" value="Individual 60 minutes" label="Individual 60 minutes" name="lessontype" onClick={e => setEditedStudent({ ...editedStudent, lessonType: e.target.value })} />
+                            <Form.Check type="radio" value="Group Lesson" label="Group Lesson" name="lessontype" onClick={e => setEditedStudent({ ...editedStudent, lessonType: e.target.value })} />
+                          </Form.Group>
+                          <Form.Group>
+                            <Form.Label>Price per lesson $</Form.Label>
+                            <Form.Control type="number" value={editedStudent.lessonPrice} onChange={e => setEditedStudent({ ...editedStudent, lessonPrice: e.target.value })}></Form.Control>
+                          </Form.Group>
+                          <Button variant="dark" className="button" type="submit" onClick={submitEdit}>
+                            Save
+                          </Button>
+                          <Button variant="danger" className="button" type="submit" onClick={clickedEdit}>
+                            Cancel
+                          </Button>
+                          {/* <h4>Back to <NavLink to="/Schools">Schools</NavLink> | <NavLink to="/Students">Students</NavLink></h4> */}
+                        </Form>
+                      </>
+            }
             <Form>
                 <h4>Music Diary</h4>
                 <Form.Group>
                     <Form.Label>Term</Form.Label>
-                    <Form.Select value={selectedTerm} onChange={e => setSelectedTerm(e.target.value)}>
+                    <Form.Select value={selectedTerm} onChange={e => setSelectedTerm(e.target.value)} onFocus={() => clearMsgs()}>
                         <option>Choose a Term</option>
                         <option value="1">1</option>
                         <option value="2">2</option>
@@ -189,10 +313,12 @@ export default function DisplayStudentInfo() {
                     </Form.Select>
                     <Button className='buttons' onClick={populateDiary}>Find</Button>
                     <Button className='buttons' onClick={showForm}>Add a Term</Button>
+                    <Button className='buttons' onClick={clickedEdit}>Edit Student Details</Button>
                 </Form.Group>
             </Form>
             {!errMsg ? null : <p className='errmsg'>{errMsg}</p>}
             {!successMsg ? null : <p className='success-msg'>{successMsg}</p>}
+            
             {!showShow ? null : (
                 <Form className='form'>
                     <Form.Group className="mb-3" controlId="formBasicEmail">
@@ -230,7 +356,8 @@ export default function DisplayStudentInfo() {
                             onChange={e => setTerm({ ...Term, goalLessonCount: e.target.value })}
                             required />
                     </Form.Group>
-                    <Button variant='dark' onClick={handleTermSubmit}>Submit</Button>
+                    <Button variant='dark' onClick={handleTermSubmit}>Save</Button>
+                    <Button variant="danger" className="button" type="submit" onClick={() => setShowShow(false)}>Cancel</Button>
                 </Form>
             )}
             {!attSuccess ? null : (
@@ -241,7 +368,7 @@ export default function DisplayStudentInfo() {
                             return (
                                 <Accordion.Item eventKey={i}>
                                     <Accordion.Header>Week {week.week}</Accordion.Header>
-                                        {!week.record ? 
+                                        {!week.record || clickedEditAtt? 
                                         <Accordion.Body>
                                             <Form.Group>
                                                 <Form.Label>Attendance</Form.Label>
@@ -278,23 +405,24 @@ export default function DisplayStudentInfo() {
                                             </Form.Group>
                                             <ButtonGroup>
                                                 <Button onClick={handleEntry}>Save</Button>
+                                                <Button variant="danger" onClick={()=>setClickedEditAtt(false)}>Cancel</Button>
+
                                             </ButtonGroup>
                                         </Accordion.Body>
                                         :
                                         <Accordion.Body>
                                             <p>Attendance: {week.record} </p>
                                             <p>Lesson Notes: {week.notes}</p>
-                                            <ButtonGroup>
-                                                <Button disabled>Edit</Button>
-                                            </ButtonGroup>
+                                            <Button className='buttons' onClick={()=>setClickedEditAtt(true)}>Edit</Button>
+                                            <Button variant="danger" className='buttons' onClick={()=>setClickedEditAtt(false)}>Cancel</Button>
                                         </Accordion.Body>}
-                                    
                                 </Accordion.Item>
                             )
                         }
                         )}
                 </Accordion></>
             )}
+            
         </div>
     )
 }

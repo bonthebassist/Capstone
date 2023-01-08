@@ -59,14 +59,14 @@ export default function StudentsPage() {
   return (
     <>
       <div className='content-div'>
+      <MDBCard className='add-card' >
+        <MDBCardBody onClick={() => handleClick(`NewStudent`)}>
+          <MDBCardTitle> <MDBIcon fas icon="plus" /> Add a Student</MDBCardTitle>
+        </MDBCardBody>
+      </MDBCard>
+      
+      {cardsMap}
 
-        {cardsMap}
-
-        <MDBCard className='add-card' >
-          <MDBCardBody onClick={() => handleClick(`NewStudent`)}>
-            <MDBCardTitle> <MDBIcon fas icon="plus" /> Add a Student</MDBCardTitle>
-          </MDBCardBody>
-        </MDBCard>
       </div>
     </>
   );

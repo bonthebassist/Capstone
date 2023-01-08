@@ -1,6 +1,6 @@
 import './App.css';
 import React from 'react'
-import { Routes, Route } from 'react-router-dom'
+import { Routes, Route, Navigate } from 'react-router-dom'
 
 import Attendance from './pages/AttendancePage'
 import SchoolsPage from './pages/SchoolsPage';
@@ -21,9 +21,6 @@ import NavbarBoots from './components/NavbarBoots';
 
 
 function App() {
-
-
-
   return (
     <main >
       <NavbarBoots />
