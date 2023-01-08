@@ -19,6 +19,7 @@ function HomePage() {
 
   return (
     <>
+    <div className='home-div'>
       <Container fluid="true">
         <Row>
           <Col className="m-auto jumbo">
@@ -85,6 +86,7 @@ function HomePage() {
         © 2022 Copyright Bonnie Aue
       </div>
       </footer>
+      </div>
       </>
   )
 }

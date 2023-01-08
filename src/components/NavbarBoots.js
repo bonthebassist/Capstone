@@ -6,6 +6,7 @@ import { useContext } from 'react'
 import { AuthContext } from "../context/AuthProvider"
 import { LinkContainer } from 'react-router-bootstrap';
 import { Button } from 'react-bootstrap';
+import HorizontalLogo from '../Chuta-logo-horizontal-01.svg'
 
 function NavbarBoots() {
   const { auth, setAuth } = useContext(AuthContext)
@@ -18,10 +19,17 @@ function NavbarBoots() {
   return (
     <>
       {[true, 'sm', 'md'].map((expand) => (
-        <Navbar key={expand} fixed="top" expand={expand} className="mb-3" bg="light" variant="light">
+        <Navbar key={expand} fixed="top" expand={expand} className="mb-3" bg="dark" variant="dark">
           <Container fluid>
             <LinkContainer to="/">
-            <Navbar.Brand to="/" id="site-title">Chuta</Navbar.Brand>
+            <Navbar.Brand to="/" id="site-title">
+              <img
+                src={HorizontalLogo}
+                height='40'
+                alt='Chuta'
+                loading='lazy'
+              />
+            </Navbar.Brand>
             </LinkContainer>
             <Navbar.Toggle aria-controls={`offcanvasNavbar-expand-${expand}`} />
             <Navbar.Offcanvas
@@ -31,7 +39,12 @@ function NavbarBoots() {
             >
               <Offcanvas.Header closeButton>
                 <Offcanvas.Title id={`offcanvasNavbarLabel-expand-${expand}`}>
-                  Chuta
+                <img
+                src={HorizontalLogo}
+                height='50'
+                alt='Chuta'
+                loading='lazy'
+              />
                 </Offcanvas.Title>
               </Offcanvas.Header>
               <Offcanvas.Body>
@@ -46,8 +59,9 @@ function NavbarBoots() {
                     <Nav.Link>Sign Up</Nav.Link>
                   </LinkContainer>
                   </> 
-                  : null}
-                  {auth.token ? 
+                  :
+                  // : null}
+                  // {auth.user_id ? 
                   <>
                   <LinkContainer to="/Schools">
                     <Nav.Link>Schools</Nav.Link>
@@ -64,9 +78,9 @@ function NavbarBoots() {
                   <LinkContainer to="/MyDetails">
                     <Nav.Link>My Details</Nav.Link>
                   </LinkContainer>
-                  <Button onClick={Logout}>Logout</Button>
+                  <Button variant="light" onClick={Logout}>Logout</Button>
                   </>
-                  : null}
+                  }
                   
                   
                   </Nav>
