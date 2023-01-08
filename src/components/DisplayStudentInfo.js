@@ -1,5 +1,5 @@
 import { useEffect, useState, useContext } from 'react'
-import { Button, Form, Accordion, ButtonGroup } from 'react-bootstrap';
+import { Button, Form, Accordion, ButtonGroup, Card, CardGroup, Container } from 'react-bootstrap';
 import { useParams } from 'react-router-dom';
 import axios from 'axios';
 import { AuthContext } from '../context/AuthProvider';
@@ -27,10 +27,14 @@ export default function DisplayStudentInfo() {
     const [selectedYear, setSelectedYear] = useState()
     const [success, setSuccess] = useState(false)
     const [attSuccess, setAttSuccess] = useState(false)
+    const [errMsg, setErrMsg] = useState('')
+    const [successMsg, setSuccessMsg] = useState('')
 
     const showForm = () => {
         if (!showShow) {
             setShowShow(true)
+            setErrMsg('')
+            setSuccessMsg('')
         }
     }
     function consoleEntry (){
@@ -86,6 +90,7 @@ export default function DisplayStudentInfo() {
             .then(response => {
                 console.log(response.data)
                 setSuccess(true);
+                setSuccessMsg('Term succesfully created')
             }).catch(error => {
                 console.log(error)
                 alert(error)
@@ -112,31 +117,57 @@ export default function DisplayStudentInfo() {
 
     const populateDiary = () => {
         setShowShow(false)
-        const schoolDateSearch = "T" + selectedTerm + selectedYear
-        console.log(attendanceDoc)
-        console.log("populateDiary function")
-        console.log(schoolDateSearch)
+        setSuccessMsg('')
         const config = {
             headers: {
                 'Content-type': 'application/json',
                 'x-access-token': auth.token
             }
         };
-        console.log(`populate diary queries tutor=${auth.user_id}, student=${studentDoc._id}, schoolDate=${schoolDateSearch}`)
-        let URL = `http://localhost:4000/get/attendanceByStudent?tutor=63b9ea60f0ffd9c3b185a948&student=63ba044f3b01886a7f710417&schoolDate=T12023`
+        
+        const schoolDateSearch = "T" + selectedTerm + selectedYear
+    
         let fancyURL = `http://localhost:4000/get/attendanceByStudent?tutor=${auth.user_id}&student=${studentDoc._id}&schoolDate=${schoolDateSearch}`
+        
         axios.get(fancyURL, config)
             .then((resp) => {
                 console.log(resp.data)
+                if (resp.data){
                 setAttendanceDoc(resp.data)
                 setAttSuccess(true)
+                } else {
+                setErrMsg("No attendance found for that term, try adding a term!")
+                setAttSuccess(false)
+                }
             })
     }
 
     return (
         <div className='content-div'>
             <h4>{nameArray[0]} {nameArray[1]}</h4>
+            <CardGroup>
+                <Card className='add-card' >
+                    <Card.Body> 
+                        <Card.Title>Contact {studentDoc.parentFirstName}</Card.Title>
+                    </Card.Body>
+                </Card>
+                <Card className='add-card' >
+                    <Card.Body> 
+                        <Card.Title>Contact {studentDoc.studentFirstName}</Card.Title>
+                    </Card.Body>
+                </Card>
+            </CardGroup>
+            <h4>Details</h4>
+            <p>
+                <strong>School</strong> {studentDoc.schoolName}<br />
+                <strong>Instrument</strong> {studentDoc.instrument}<br />
+                <strong>Lesson Type</strong> {studentDoc.lessonType}<br />
+                <strong>Year Level</strong> {studentDoc.yearLevel}
+            </p>
+
+
             <Form>
+                <h4>Music Diary</h4>
                 <Form.Group>
                     <Form.Label>Term</Form.Label>
                     <Form.Select value={selectedTerm} onChange={e => setSelectedTerm(e.target.value)}>
@@ -157,6 +188,8 @@ export default function DisplayStudentInfo() {
                     <Button className='buttons' onClick={showForm}>Add a Term</Button>
                 </Form.Group>
             </Form>
+            {!errMsg ? null : <p className='errmsg'>{errMsg}</p>}
+            {!successMsg ? null : <p className='success-msg'>{successMsg}</p>}
             {!showShow ? null : (
                 <Form className='form'>
                     <Form.Group className="mb-3" controlId="formBasicEmail">
@@ -199,7 +232,7 @@ export default function DisplayStudentInfo() {
             )}
             {!attSuccess ? null : (
             <>
-            <h2>{attendanceDoc.schoolDate}</h2>
+            <h2>Term {selectedTerm} {selectedYear}</h2>
                 <Accordion>
                     {attendanceDoc.attendance.map((week, i) => {
                             return (
