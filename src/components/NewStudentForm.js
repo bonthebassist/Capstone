@@ -42,48 +42,42 @@ export default function NewSchoolForm() {
     })
   } , [auth.token, auth.user_id])
 
-  const reqBody =
-  {
-    "studentFirstName": Student.studentFirstName,
-    "studentLastName": Student.studentLastName,
-    "studentEmail": Student.studentEmail,
-    "school": Student.school,
-    "parentFirstName": Parent.parentFirstName,
-    "parentLastName": Parent.parentLastName,
-    "parentEmail": Parent.parentEmail,
-    "yearLevel": Student.yearLevel,
-    "instrument": Student.instrument,
-    "lessonType": Student.lessonType,
-    "lessonPrice": Student.lessonPrice
-  }
-  const reqBody2 =
-  {
-    "studentFirstName": Student.studentFirstName,
-    "studentLastName": Student.studentLastName,
-    "studentEmail": Student.studentEmail,
-    "school_id": Student.school,
-    "tutor_id": auth.user_id,
-    "instrument": Student.instrument,
-    "yearLevel": Student.yearLevel,
-    "parentFirstName": Parent.parentFirstName,
-    "parentLastName": Parent.parentLastName,
-    "parentEmail": Parent.parentEmail,
-    "lessonType": Student.lessonType,
-    "lessonPrice": Student.lessonPrice
-  }
 
-
-  const config = {
-    headers: {
-      'Content-type': 'application/json',
-      'x-access-token': auth.token
-    }
-  };
-
-  const url = `http://localhost:4000/post/student`;
 
   const handleClick = (e) => {
     e.preventDefault()
+
+    let splitSchool = Student.school.split("%")
+    let school_id = splitSchool[0]
+    let schoolName = splitSchool[1]
+    console.log(school_id)
+    console.log(schoolName)
+    const reqBody2 =
+    {
+      "studentFirstName": Student.studentFirstName,
+      "studentLastName": Student.studentLastName,
+      "studentEmail": Student.studentEmail,
+      "school_id": school_id,
+      "schoolName": schoolName,
+      "tutor_id": auth.user_id,
+      "instrument": Student.instrument,
+      "yearLevel": Student.yearLevel,
+      "parentFirstName": Parent.parentFirstName,
+      "parentLastName": Parent.parentLastName,
+      "parentEmail": Parent.parentEmail,
+      "lessonType": Student.lessonType,
+      "lessonPrice": Student.lessonPrice
+    }
+  
+    const config = {
+      headers: {
+        'Content-type': 'application/json',
+        'x-access-token': auth.token
+      }
+    };
+  
+    const url = `http://localhost:4000/post/student`;
+    
     axios.post(url, reqBody2, config)
       .then(response => {
         console.log(response)
@@ -133,7 +127,7 @@ export default function NewSchoolForm() {
                   <Form.Select value={Student.school} onChange={e => setStudent({ ...Student, school: e.target.value })}>
                     <option>Choose a school</option>
                     {schoolsData ? schoolsData.map((school) => {
-                      return (<option value={school._id}>{school.schoolName}</option>)
+                      return (<option value={school._id + "%" + school.schoolName}>{school.schoolName}</option>)
                     }) : null}
                   </Form.Select>
                 </Form.Group>
