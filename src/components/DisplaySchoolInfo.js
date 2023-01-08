@@ -1,6 +1,6 @@
 import React from 'react'
 import { useEffect, useState, useContext } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { Form, useNavigate } from 'react-router-dom'
 import { useParams } from 'react-router-dom'
 import { Button, Card, CardGroup } from 'react-bootstrap'
 import axios from 'axios'
@@ -16,6 +16,13 @@ function DisplaySchoolInfo() {
   const [studentData, setStudentData] = useState()
   const [studentEmails, setStudentEmails] = useState([])
   const [parentEmails, setParentEmails] = useState([])
+  const [addAdminClick, setAddAdminClick] = useState(false)
+  const [addLinkClick, setAddLinkClick] = useState(false)
+  const [newAdmin, setNewAdmin] = useState({
+    contactName: '',
+    contactEmail:''
+  })
+
   const navigate = useNavigate();
 
   function handleClick(path) { navigate(path); }
@@ -72,7 +79,15 @@ function DisplaySchoolInfo() {
       })
   }, [auth])
 
-
+  const saveNewAdmin = () => {
+    const reqBody = {
+      school_id: schoolsData._id,
+      contactName: newAdmin.contactName,
+      contactEmail: newAdmin.contactEmail
+    }
+    console.log(reqBody)
+  }
+ 
   return (
     <>
       {!schoolsData ? null : (
@@ -107,11 +122,32 @@ function DisplaySchoolInfo() {
               </Card.Body>
             </Card>
             <Card className='add-card' >
-              <Card.Body onClick={() => console.log("feature to come")}>
+              <Card.Body onClick={() => setAddAdminClick(true)}>
                 <Card.Title> <MDBIcon fas icon="plus" /> Add </Card.Title>
               </Card.Body>
             </Card>
           </CardGroup>
+          {/* {!setAddAdminClick ? null : (
+            <Form>
+              <Form.Group className="mb-3" controlId="formBasicEmail">
+                <Form.Label>Administrator Name</Form.Label>
+                <Form.Control
+                type='text'
+                value={newAdmin.contactName}
+                onChange={(e)=> setNewAdmin({...newAdmin, contactName: e.target.value})}
+                />
+              </Form.Group>
+              <Form.Group className="mb-3" controlId="formBasicEmail">
+                <Form.Label>Administrator Email</Form.Label>
+                <Form.Control
+                type='email'
+                value={newAdmin.contactName}
+                onChange={(e)=> setNewAdmin({...newAdmin, contactEmail: e.target.value})}
+                />
+              </Form.Group>
+              <Button onClick={saveNewAdmin}>Save</Button>
+            </Form>
+          )} */}
           <h5>Quick Links</h5>
           <CardGroup>
             <Card className='add-card' >
@@ -123,11 +159,33 @@ function DisplaySchoolInfo() {
               </Card.Body>
             </Card>
             <Card className='add-card' >
-              <Card.Body onClick={() => console.log("feature to come")}>
+              <Card.Body onClick={() => setAddLinkClick(true)}>
                 <Card.Title> <MDBIcon fas icon="plus" /> Add </Card.Title>
               </Card.Body>
             </Card>
           </CardGroup>
+
+          {/* {!setAddLinkClick ? null : (
+            <Form>
+              <Form.Group>
+                <Form.Label>Administrator Name</Form.Label>
+                <Form.Control
+                type='text'
+                value={newAdmin.contactName}
+                onChange={(e)=> setNewAdmin({...newAdmin, contactName: e.target.value})}
+                />
+              </Form.Group>
+              <Form.Group>
+                <Form.Label>Administrator Email</Form.Label>
+                <Form.Control
+                type='email'
+                value={newAdmin.contactName}
+                onChange={(e)=> setNewAdmin({...newAdmin, contactEmail: e.target.value})}
+                />
+              </Form.Group>
+              <Button onClick={saveNewAdmin}>Save</Button>
+            </Form>
+          )} */}
 
           <h4>Students</h4>
           {studentData ? studentData.map((student) => {
