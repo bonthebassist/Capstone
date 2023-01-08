@@ -26,17 +26,21 @@ export default function SchoolsPage() {
 
 
   useEffect(() => {
+    console.log(auth.user_id)
+    console.log(auth.token)
     const config = {
       headers:{
         'Content-type': 'application/json',
         'x-access-token': auth.token
       }
     };
-    axios.get(`http://localhost:4001/schools?email=${auth.email}`, config)
+    axios.get(`http://localhost:4000/get/schoolsBytutorID?tutor=${auth.user_id}`, config)
     .then((resp) => {
+      console.log("in the .then")
+      console.log(resp)
       setSchoolsData(resp.data)
     })
-  }, [auth.email, auth.token])
+  }, [auth.user_id, auth.token])
 
   //dynamically create cards based on user data
   let cardsMap = schoolsData.map((school)=>{
@@ -52,10 +56,8 @@ export default function SchoolsPage() {
 
   return (
     <>
-    <DashboardElements/>
     <div className='content-div'>
-    <h4>Welcome back!</h4>
-    <p> You are signed in as: {auth.email}</p>
+    <h4>Welcome {auth.firstName}! </h4>
       <link
         href="https://use.fontawesome.com/releases/v5.15.1/css/all.css"
         rel="stylesheet"

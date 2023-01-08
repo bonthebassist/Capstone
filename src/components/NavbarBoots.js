@@ -18,7 +18,7 @@ function NavbarBoots() {
   return (
     <>
       {[true, 'sm', 'md'].map((expand) => (
-        <Navbar key={expand} fixed="top" expand={expand} className="mb-3" bg="dark" variant="dark">
+        <Navbar key={expand} fixed="top" expand={expand} className="mb-3" bg="light" variant="light">
           <Container fluid>
             <LinkContainer to="/">
             <Navbar.Brand to="/" id="site-title">Chuta</Navbar.Brand>
@@ -46,7 +46,8 @@ function NavbarBoots() {
                     <Nav.Link>Sign Up</Nav.Link>
                   </LinkContainer>
                   </> 
-                  :
+                  : null}
+                  {auth.token ? 
                   <>
                   <LinkContainer to="/Schools">
                     <Nav.Link>Schools</Nav.Link>
@@ -63,9 +64,11 @@ function NavbarBoots() {
                   <LinkContainer to="/MyDetails">
                     <Nav.Link>My Details</Nav.Link>
                   </LinkContainer>
-                  <Button variant="outline-light" onClick={Logout}>Logout</Button>
+                  <Button onClick={Logout}>Logout</Button>
                   </>
-                  }
+                  : null}
+                  
+                  
                   </Nav>
               </Offcanvas.Body>
             </Navbar.Offcanvas>

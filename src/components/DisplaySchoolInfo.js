@@ -19,39 +19,38 @@ function DisplaySchoolInfo() {
 
 
   useEffect(() => {
-    if (auth.token){
     const config = {
       headers:{
         'Content-type': 'application/json',
         'x-access-token': auth.token
       }
     };
-    axios.get(`http://localhost:4001/schools?email=${auth.email}`, config)
+    axios.get(`http://localhost:4000/get/schoolsBytutorID?tutor=${auth.user_id}`, config)
     .then((resp) => {
-      console.log(resp.data)
-      let schoolsArray = resp.data
-      let currentSchoolObj = schoolsArray.filter(function (el){
-       return el.schoolName === schoolName
+      console.log("in the .then")
+      console.log(resp)
+      let allSchools = resp.data
+      let actualSchool = allSchools.filter(function (el){
+        return el.schoolName === schoolName
       })
-      console.log(currentSchoolObj[0])
-      setSchoolsData(currentSchoolObj[0])
+      setSchoolsData(actualSchool[0])
     })
-  }}, [auth])
+  }, [auth])
 
   useEffect(() => {
-    if (auth.token){
     const config = {
       headers:{
         'Content-type': 'application/json',
         'x-access-token': auth.token
       }
     };
-    axios.get(`http://localhost:4001/students?email=${auth.email}&school=${schoolName}`, config)
+    axios.get(`http://localhost:4000/get/studentsBytutorID?tutor=${auth.user_id}`, config)
     .then((resp) => {
+      console.log("in the .then of students effect")
       console.log(resp.data)
       setStudentData(resp.data)
     })
-  }}, [auth])
+  }, [auth])
 
 
   return (
@@ -69,15 +68,10 @@ function DisplaySchoolInfo() {
         return (
         <CardGroup>
           <Card className='student-card'>
-            <Card.Body className='student-card-title' onClick={() => handleClick(`/DisplayStudent/${student.studentFirstName+" "+student.studentLastName}`)}>
-              {student.studentFirstName} {student.studentLastName}
+            <Card.Body onClick={() => handleClick(`/DisplayStudent/${student.studentFirstName+" "+student.studentLastName}`)}>
+              <Card.Title className='student.card.title'>{student.studentFirstName} {student.studentLastName}</Card.Title>
+              <Card.Text>{student.instrument} . Year {student.yearLevel}</Card.Text>
             </Card.Body>
-            <Card.Footer className='student-card-footer'>
-              <button className='student-card-button'>Late</button> //opens email dialog to student cc parents
-              <button className='student-card-button'>Absent</button> //opens email dialog to parents cc student
-              <button className='student-card-button'>Edit</button> //takes to edit student form
-              <button className='student-card-button'>Delete</button> //opens modal - are you sure? then deletes from database
-            </Card.Footer>
           </Card>
         </CardGroup>
         )

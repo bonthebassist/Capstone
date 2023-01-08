@@ -39,11 +39,15 @@ function Login() {
         }
         );
 
-        let userStuff = {"email":response.data.email, "token":response.data.token}
-        localStorage.setItem('user', JSON.stringify(userStuff))
-
+      const firstName = response?.data?.firstName
+      const user_id = response?.data?._id
       const token = response?.data?.token
-      setAuth({ email: email, token: token})
+
+      let userStuff = {"user_id":user_id, "token":token, "firstName":firstName, "user_id": user_id}
+      
+      localStorage.setItem('user', JSON.stringify(userStuff))
+      
+      setAuth({ email: email, token: token, firstName: firstName, user_id: user_id })
       setEmail('');
       setPassword('');
       setSuccess(true);

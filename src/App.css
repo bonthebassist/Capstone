@@ -59,15 +59,15 @@ body {
   background: linear-gradient(to right bottom, rgba(246, 211, 101, 1), rgba(253, 160, 133, 1))
 }
 
-@media only screen and (min-width: 993px) {
+/* @media only screen and (min-width: 993px) {
   .content-div {
     position: relative;
     left: 250px;
   }
-}
+} */
 
 .content-div {
-  margin: 20px 10px 10px 20px
+  margin: 80px 10px 10px 20px
 }
 
 .add-card {
@@ -194,7 +194,7 @@ body {
 }
 
 .form {
-  width: 500px;
+  width: 600px;
   justify-self: center;
   background-color:white;
   padding:20px;
@@ -202,5 +202,9 @@ body {
 }
 
 .form button {
+  margin: 20px 20px 20px 0px;
+}
+
+.buttons {
   margin: 20px 20px 20px 0px;
 }

@@ -37,6 +37,22 @@ export default function NewSchoolForm() {
     "schoolColor": SchoolColor
   }
 
+  const reqBody2 = 
+    {
+      "tutor_id": auth.user_id,
+      "schoolName": School.schoolName,
+      "schoolAdmin": {
+          "contactName":SchoolAdminDetails.title,
+          "contactEmail":SchoolAdminDetails.email
+      },
+      "usefulLinks":{
+          "linkTitle":UsefulLinks.linkTitle,
+          "linkURL": UsefulLinks.linkURL
+      },
+      "schoolColor": SchoolColor
+  }
+  
+
   const config = {
     headers: {
       'Content-type': 'application/json',
@@ -44,11 +60,11 @@ export default function NewSchoolForm() {
     }
   };
 
-  const url = `http://localhost:4001/schools?email=${auth.email}`;
+  const url = `http://localhost:4000/post/school`;
 
   const handleClick = (e) => {
     e.preventDefault()
-    axios.post(url, reqBody, config)
+    axios.post(url, reqBody2, config)
       .then(response => {
         console.log(response.data)
         setSuccess(true);
@@ -64,7 +80,7 @@ export default function NewSchoolForm() {
 
 
   return (
-    <Container>
+    <Container className="form-container">
       {!auth.user_id ? (
         <h2>Please <NavLink to="/Login">Login</NavLink></h2>
       ) : (
@@ -74,7 +90,7 @@ export default function NewSchoolForm() {
           ) : (
             <>
               <h2>Add a school</h2>
-              <Form className='adding-form'>
+              <Form className='form'>
                 <Form.Group className="mb-3" controlId="formBasicEmail">
                   <Form.Label>School Name</Form.Label>
                   <Form.Control

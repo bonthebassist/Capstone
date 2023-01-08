@@ -17,65 +17,45 @@ export default function DisplayStudentInfo() {
         goalLessonCount: ""
     });
     const [studentDoc, setStudentDoc] = useState({})
-    const [attendanceDoc, setAttendanceDoc] = useState({
-        "studentFirstName": "",
-        "studentLastName": "",
-        "schoolDate": "",
-        "termLength": "",
-        "attendanceArray": "",
-        "school": "",
-        "lessonCount": "",
-        "catchUpCount": "",
-        "goalLessonCount": "",
-        "invoiced": ""
-    });
+    const [attendanceDoc, setAttendanceDoc] = useState();
     const [entry, setEntry] = useState({
-        attendance: '',
-        diaryEntry: ''
+        week: "",
+        record: "",
+        notes: ""
     })
     const [selectedTerm, setSelectedTerm] = useState()
     const [selectedYear, setSelectedYear] = useState()
-
+    const [success, setSuccess] = useState(false)
+    const [attSuccess, setAttSuccess] = useState(false)
 
     const showForm = () => {
         if (!showShow) {
             setShowShow(true)
         }
     }
-
+    function consoleEntry (){
+        console.log(entry.week)
+        console.log(entry.record)
+        console.log(entry.notes)
+    }
     //for getting studentDoc
     useEffect(() => {
+        console.log(auth.token)
         const config = {
             headers: {
                 'Content-type': 'application/json',
                 'x-access-token': auth.token
             }
         };
-        axios.get(`http://localhost:4001/student?email=${auth.email}&FirstName=${nameArray[0]}&LastName=${nameArray[1]}`, config)
+        axios.get(`http://localhost:4000/get/studentByName?tutor=${auth.user_id}&firstName=${nameArray[0]}&lastName=${nameArray[1]}`, config)
             .then((resp) => {
                 console.log(resp.data)
-                setStudentDoc(resp.data[0])
+                setStudentDoc(resp.data)
             })
-    }, [auth.token, auth.email])
-    //for getting attendanceDoc
-    // useEffect(() => {
-    //     let schoolDateSearch = "T"+selectedTerm+selectedYear
-    //         const config = {
-    //             headers: {
-    //                 'Content-type': 'application/json',
-    //                 'x-access-token': auth.token
-    //             }
-    //         };
-    //         axios.get(`http://localhost:4001/attendance?email=${auth.email}&FirstName=${nameArray[0]}&LastName=${nameArray[1]}&schoolDate${schoolDateSearch}`, config)
-    //             .then((resp) => {
-    //                 console.log(resp.data)
-    //                 setAttendanceDoc(resp.data[0])
-    //             })
-    // }, [auth.token, auth.email])
+    }, [auth.token, auth.user_id])
 
-    useEffect(() => {
-        console.log(entry.attendance.slice(0, 2))
-    }, [entry])
+
+
     const config = {
         headers: {
             'Content-type': 'application/json',
@@ -85,44 +65,27 @@ export default function DisplayStudentInfo() {
 
     const handleTermSubmit = (e) => {
         console.log("in the handleTermSubmit function")
-        console.log(Term)
-        const makeAttendanceArray = () => {
-            let attendanceArray = []
-            for (let i = 1; i <= Term.termLength; i++) {
-                let element
-                if (i < 10) {
-                    element = "0" + i
-                } else {
-                    element = `${i}`
-                }
-                attendanceArray.push(element)
-            }
-            console.log(attendanceArray)
-            return attendanceArray
-        }
         e.preventDefault()
         setShowShow(false)
         //reqBody for making a term
         const schoolDate = "T" + Term.termNo + Term.yearNo
+        const studentName = studentDoc.studentFirstName + " " + studentDoc.studentLastName
         console.log(schoolDate)
-        let reqBody = {
-            studentFirstName: nameArray[0],
-            studentLastName: nameArray[1],
-            schoolDate: schoolDate, //transform into this state
-            termLength: Term.termLength, //number input filed
-            attendanceArray: makeAttendanceArray(),
-            diaryArray: [],
-            school: studentDoc.school, //input autimatically from this page
-            lessonCount: "0",
-            catchUpCount: "0",
-            goalLessonCount: Term.goalLessonCount, //number input field
-            invoiced: "unpaid"
+        let reqBody2 = {
+            "student_id": studentDoc._id,
+            "studentName": studentName,
+            "tutor_id": auth.user_id,
+            "school_id": studentDoc.school_id,
+            "schoolDate": schoolDate,
+            "termLength": Term.termLength,
+            "goalLessonCount": Term.goalLessonCount,
+            "invoiced": "false"
         }
-        console.log(reqBody)
-        axios.post(`http://localhost:4001/attendance/term?email=${auth.email}`, reqBody, config)
+        console.log(reqBody2)
+        axios.post(`http://localhost:4000/post/attendance`, reqBody2, config)
             .then(response => {
                 console.log(response.data)
-                // setSuccess(true);
+                setSuccess(true);
             }).catch(error => {
                 console.log(error)
                 alert(error)
@@ -131,19 +94,16 @@ export default function DisplayStudentInfo() {
 
     const handleEntry = (e) => {
         e.preventDefault()
-        let reqBodyAtt = {
-            studentFirstName: nameArray[0],
-            studentLastName: nameArray[1],
-            schoolDate: attendanceDoc.schoolDate,
-            attendance: entry.attendance,
-            diaryEntry: entry.diaryEntry,
-            week: entry.attendance.slice(0, 2)
+        let reqBodyAtt2 = {
+            "attendance_id": attendanceDoc._id,
+            "week": entry.week,
+            "record":entry.record,
+            "notes": entry.notes
         }
-        console.log(reqBodyAtt)
-        axios.post(`http://localhost:4001/attendance?email=${auth.email}`, reqBodyAtt, config)
+        console.log(reqBodyAtt2)
+        axios.put(`http://localhost:4000/put/attendanceInput`, reqBodyAtt2, config)
             .then(response => {
                 console.log(response.data)
-
             }).catch(error => {
                 console.log(error)
                 alert(error)
@@ -151,6 +111,7 @@ export default function DisplayStudentInfo() {
     }
 
     const populateDiary = () => {
+        setShowShow(false)
         const schoolDateSearch = "T" + selectedTerm + selectedYear
         console.log(attendanceDoc)
         console.log("populateDiary function")
@@ -161,53 +122,43 @@ export default function DisplayStudentInfo() {
                 'x-access-token': auth.token
             }
         };
-        axios.get(`http://localhost:4001/attendance?email=${auth.email}&FirstName=${nameArray[0]}&LastName=${nameArray[1]}&schoolDate=${schoolDateSearch}`, config)
+        console.log(`populate diary queries tutor=${auth.user_id}, student=${studentDoc._id}, schoolDate=${schoolDateSearch}`)
+        let URL = `http://localhost:4000/get/attendanceByStudent?tutor=63b9ea60f0ffd9c3b185a948&student=63ba044f3b01886a7f710417&schoolDate=T12023`
+        let fancyURL = `http://localhost:4000/get/attendanceByStudent?tutor=${auth.user_id}&student=${studentDoc._id}}&schoolDate=${schoolDateSearch}`
+        axios.get(URL, config)
             .then((resp) => {
                 console.log(resp.data)
-                let splitDiary = []
-                if (resp.data[0].length >0){
-                let diaryArray = resp.data[0].diaryArray.sort()
-                splitDiary = diaryArray.map((el)=>{
-                    let split = el.split("%&")
-                    return split
-                })
-                }
-                setAttendanceDoc({
-                    "studentFirstName": resp.data[0].studentFirstName,
-                    "studentLastName": resp.data[0].studentLastName,
-                    "schoolDate": resp.data[0].schoolDate,
-                    "termLength": resp.data[0].termLength,
-                    "attendanceArray": resp.data[0].attendanceArray.sort(),
-                    "diaryArray":splitDiary,
-                    "school": resp.data[0].school,
-                })
+                setAttendanceDoc(resp.data)
+                setAttSuccess(true)
             })
     }
 
     return (
         <div className='content-div'>
-            <h4>{nameArray[0]}'s Music Diary</h4>
-            <Form.Group>
-                <Form.Label>Term</Form.Label>
-                <Form.Select value={selectedTerm} onChange={e => setSelectedTerm(e.target.value)}>
-                    <option>Choose a Term</option>
-                    <option value="1">1</option>
-                    <option value="2">2</option>
-                    <option value="3">3</option>
-                    <option value="4">4</option>
-                </Form.Select>
-                <Form.Label>Year</Form.Label>
-                <Form.Select value={selectedYear} onChange={e => setSelectedYear(e.target.value)}>
-                    <option>Choose a Year</option>
-                    <option value="2022">2022</option>
-                    <option value="2023">2023</option>
-                    <option value="2024">2024</option>
-                </Form.Select>
-                <Button onClick={populateDiary}>Find</Button>
-            </Form.Group>
-            {showShow ? null : <Button onClick={showForm}>Add a Term</Button>}
+            <h4>{nameArray[0]} {nameArray[1]}</h4>
+            <Form>
+                <Form.Group>
+                    <Form.Label>Term</Form.Label>
+                    <Form.Select value={selectedTerm} onChange={e => setSelectedTerm(e.target.value)}>
+                        <option>Choose a Term</option>
+                        <option value="1">1</option>
+                        <option value="2">2</option>
+                        <option value="3">3</option>
+                        <option value="4">4</option>
+                    </Form.Select>
+                    <Form.Label>Year</Form.Label>
+                    <Form.Select value={selectedYear} onChange={e => setSelectedYear(e.target.value)}>
+                        <option>Choose a Year</option>
+                        <option value="2022">2022</option>
+                        <option value="2023">2023</option>
+                        <option value="2024">2024</option>
+                    </Form.Select>
+                    <Button className='buttons' onClick={populateDiary}>Find</Button>
+                    <Button className='buttons' onClick={showForm}>Add a Term</Button>
+                </Form.Group>
+            </Form>
             {!showShow ? null : (
-                <Form>
+                <Form className='form'>
                     <Form.Group className="mb-3" controlId="formBasicEmail">
                         <Form.Label>Term Number</Form.Label>
                         <Form.Control
@@ -246,62 +197,67 @@ export default function DisplayStudentInfo() {
                     <Button variant='dark' onClick={handleTermSubmit}>Submit</Button>
                 </Form>
             )}
-            {!attendanceDoc.attendanceArray ? null : (
-                <>
-                    <h2>{attendanceDoc.schoolDate}</h2>
-                    <Accordion>
-                        {
-                            attendanceDoc.attendanceArray.map((week, i) => {
-                                if (i < 9) {
-                                    i = "0" + (i + 1)
-                                } else {
-                                    i = i + 1
-                                }
-                                return (
-                                    <Accordion.Item eventKey={i}>
-                                        
-                                        <Accordion.Header>Week {week.slice(0, 2)}</Accordion.Header>
-                                        {week.length > 2
-                                            ?
-                                            <Accordion.Body>
-                                                <p>Attendance: {week.slice(2)}</p>
-                                                <p>Lesson Notes: {
-                                                    attendanceDoc.diaryArray.length > 0 ?
-                                                    attendanceDoc.diaryArray[0][1] : null
-                                                    // attendanceDoc.diaryArray.length > 0 ?
-                                                    // attendanceDoc.diaryArray[0][0] === i ?
-                                                    // attendanceDoc.diaryArray[0][1] : null
-                                                    // : null
-                                                }</p>
-                                                <ButtonGroup>
-                                                    <Button>Edit</Button>
-                                                </ButtonGroup>
-                                            </Accordion.Body>
-                                            :
-                                            <Accordion.Body>
-                                                <Form.Group>
-                                                    <Form.Label>Attendance</Form.Label>
-                                                    <Form.Check value={`${i}P`} type="radio" label="Present" name={"week" + (i)} onClick={e => setEntry({ ...entry, attendance: e.target.value })} />
-                                                    <Form.Check value={`${i}A`} type="radio" label="Absent" name={"week" + (i)} onClick={e => setEntry({ ...entry, attendance: e.target.value })} />
-                                                    <Form.Check value={`${i}E`} type="radio" label="Excused Absence" name={"week" + (i)} onClick={e => setEntry({ ...entry, attendance: e.target.value })} />
-                                                    <Form.Check value={`${i}L`} type="radio" label="Late" name={"week" + (i)} onClick={e => setEntry({ ...entry, attendance: e.target.value })} />
-                                                </Form.Group>
-                                                <Form.Group key="1">
-                                                    <Form.Label>Lesson notes</Form.Label>
-                                                    <Form.Control as="textarea" rows={1} onChange={e => { setEntry({ ...entry, diaryEntry: `${i}%&${e.target.value}` }) }}></Form.Control>
-                                                </Form.Group>
-                                                <ButtonGroup>
-                                                    <Button onClick={handleEntry}>Save</Button>
-                                                </ButtonGroup>
-                                            </Accordion.Body>
-                                        }
-                                    </Accordion.Item>
-                                )
-                            }
-                            )}
-                    </Accordion>
-
-                </>
+            {!attSuccess ? null : (
+            <>
+            <h2>{attendanceDoc.schoolDate}</h2>
+                <Accordion>
+                    {attendanceDoc.attendance.map((week, i) => {
+                            return (
+                                <Accordion.Item eventKey={i}>
+                                    <Accordion.Header>Week {week.week}</Accordion.Header>
+                                        {!week.record ? 
+                                        <Accordion.Body>
+                                            <Form.Group>
+                                                <Form.Label>Attendance</Form.Label>
+                                                <Form.Check 
+                                                    value="P"
+                                                    type="radio" 
+                                                    label="Present" 
+                                                    name={"week" + (i)} 
+                                                    onClick={e => setEntry({ ...entry, week: `${week.week}`, record: e.target.value })}
+                                                />
+                                                <Form.Check 
+                                                    value="A" 
+                                                    type="radio" 
+                                                    label="Absent" 
+                                                    name={"week" + (i)} 
+                                                    onClick={e => setEntry({ ...entry, week: `${week.week}`, record: e.target.value })}
+                                                />
+                                                <Form.Check 
+                                                    value="E" 
+                                                    type="radio" 
+                                                    label="Excused Absence" 
+                                                    onClick={e => setEntry({ ...entry, week: `${week.week}`, record: e.target.value })}
+                                                />
+                                                <Form.Check 
+                                                    value="L" 
+                                                    type="radio" 
+                                                    label="Late" 
+                                                    onClick={e => setEntry({ ...entry, week: `${week.week}`, record: e.target.value })} 
+                                                />
+                                            </Form.Group>
+                                            <Form.Group key={i}>
+                                                <Form.Label>Lesson notes</Form.Label>
+                                                <Form.Control as="textarea" rows={1} onChange={e => { setEntry({ ...entry, notes: e.target.value }) }}></Form.Control>
+                                            </Form.Group>
+                                            <ButtonGroup>
+                                                <Button onClick={handleEntry}>Save</Button>
+                                            </ButtonGroup>
+                                        </Accordion.Body>
+                                        :
+                                        <Accordion.Body>
+                                            <p>Attendance: {week.record} </p>
+                                            <p>Lesson Notes: {week.notes}</p>
+                                            <ButtonGroup>
+                                                <Button disabled>Edit</Button>
+                                            </ButtonGroup>
+                                        </Accordion.Body>}
+                                    
+                                </Accordion.Item>
+                            )
+                        }
+                        )}
+                </Accordion></>
             )}
         </div>
     )
@@ -333,3 +289,16 @@ export default function DisplayStudentInfo() {
     
 </>
 )}</Form> */}
+
+
+{/* <>
+                
+
+            </> */}
+
+
+            // {week.length > 2
+            //     ?
+                
+            //     :
+            // }
