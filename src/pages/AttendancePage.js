@@ -78,6 +78,7 @@ export default function AttendancePage() {
   return (
     <>
       <div className='content-div'>
+        <h2 className='page-title'>Attendance</h2>
       <Form.Group>
           <Form.Label>Term</Form.Label>
           <Form.Select value={selectedTerm} onChange={e => {setErrMsg(''); setSelectedTerm(e.target.value)}}>
@@ -101,10 +102,18 @@ export default function AttendancePage() {
         
         {!attendanceData ? null :
         (
-          attendanceData.map((dataArray, i) => {
+          <>
+          {selectedTerm && selectedYear ? 
+          <>
+          <h4>Term {selectedTerm} {selectedYear}</h4>
+          <p>
+                <strong>Key: </strong><strong>P</strong> Present | <strong>A</strong> Absent without notice | <strong>L</strong> Late | <strong>E</strong> Excused absence
+          </p>
+          </> 
+          : null}
+          {attendanceData.map((dataArray, i) => {
             return (
               <>
-              {selectedTerm && selectedYear ? <h4>Term {selectedTerm} {selectedYear}</h4> : null}
               <MDBTable striped hover>
                 <MDBTableHead>
                   <tr>
@@ -137,10 +146,11 @@ export default function AttendancePage() {
                 </MDBTableBody>
               </MDBTable>
               </>
+              
         )
-
-                })
-        )}
+        
+                })}</>)
+        }
         </div>
     </>
   );

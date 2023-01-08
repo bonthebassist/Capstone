@@ -3,6 +3,7 @@ import { Button, Form, Accordion, ButtonGroup, Card, CardGroup, Container } from
 import { useParams } from 'react-router-dom';
 import axios from 'axios';
 import { AuthContext } from '../context/AuthProvider';
+import { MDBTable, MDBTableHead, MDBTableBody } from 'mdb-react-ui-kit';
 
 export default function DisplayStudentInfo() {
     const params = useParams();
@@ -123,6 +124,8 @@ export default function DisplayStudentInfo() {
         axios.put(`http://localhost:4000/put/attendanceInput`, reqBodyAtt2, config)
             .then(response => {
                 console.log(response.data)
+                setClickedEditAtt(false)
+                populateDiary()
             }).catch(error => {
                 console.log(error)
                 alert(error)
@@ -170,12 +173,18 @@ export default function DisplayStudentInfo() {
             <h2 className='page-title'>{nameArray[0]} {nameArray[1]}</h2>
             <CardGroup>
                 <Card className='add-card' >
-                    <Card.Body> 
+                    <Card.Body onClick={(e) => {
+                e.preventDefault();
+                window.location.href = `mailto:${studentDoc.parentEmail}`;
+              }}> 
                         <Card.Title>Contact {studentDoc.parentFirstName}</Card.Title>
                     </Card.Body>
                 </Card>
                 <Card className='add-card' >
-                    <Card.Body> 
+                    <Card.Body onClick={(e) => {
+                e.preventDefault();
+                window.location.href = `mailto:${studentDoc.studentEmail}`;
+              }}> 
                         <Card.Title>Contact {studentDoc.studentFirstName}</Card.Title>
                     </Card.Body>
                 </Card>
@@ -363,6 +372,33 @@ export default function DisplayStudentInfo() {
             {!attSuccess ? null : (
             <>
             <h2>Term {selectedTerm} {selectedYear}</h2>
+            <p>
+                <strong>P</strong> Present | <strong>A</strong> Absent without notice | <strong>L</strong> Late | <strong>E</strong> Excused absence
+            </p>
+            <MDBTable striped>
+                <MDBTableHead>
+                  <tr>
+                    <th>Student Name</th>
+                    {attendanceDoc.attendance.map((element)=>{return <th>{element.week}</th>})}
+                    <th scope='col'>Count</th>
+                    <th scope='col'>Goal</th>
+                  </tr>
+                </MDBTableHead>
+                <MDBTableBody>
+                      <tr>
+                        <th scope='row'>{attendanceDoc.studentName}</th>
+                        {attendanceDoc.attendance.map((entry, i) => {
+                          if (!entry.record){
+                            return <td key={i}>-</td>
+                          } else {
+                          return <td key={i}>{entry.record}</td>
+                          }
+                        })}
+                        <td style={{ fontWeight: 'bold', textAlign: 'center' }}>{attendanceDoc.lessonCount}</td>
+                        <td style={{ textAlign: 'center' }}>{attendanceDoc.goalLessonCount}</td>
+                      </tr>
+                </MDBTableBody>
+              </MDBTable>
                 <Accordion>
                     {attendanceDoc.attendance.map((week, i) => {
                             return (
