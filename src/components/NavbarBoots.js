@@ -7,6 +7,7 @@ import { AuthContext } from "../context/AuthProvider"
 import { LinkContainer } from 'react-router-bootstrap';
 import { Button } from 'react-bootstrap';
 import HorizontalLogo from '../Chuta-logo-horizontal-01.svg'
+import { Link } from 'react-router-dom';
 
 function NavbarBoots() {
   const { auth, setAuth } = useContext(AuthContext)
@@ -78,7 +79,7 @@ function NavbarBoots() {
                   <LinkContainer to="/MyDetails">
                     <Nav.Link>My Details</Nav.Link>
                   </LinkContainer>
-                  <Button variant="light" onClick={Logout}>Logout</Button>
+                  <Button variant="light" onClick={Logout}><Link to="/">Logout</Link></Button>
                   </>
                   }
                   
