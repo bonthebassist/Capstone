@@ -3,6 +3,7 @@ import { Button, Form, Container } from 'react-bootstrap';
 import DashboardElements from './DashboardPage';
 import axios from 'axios';
 import {AuthContext} from '../context/AuthProvider';
+import { Icon } from '@iconify/react';
 
 export default function MyDetailsPage() {
   const {auth} = useContext(AuthContext)
@@ -31,6 +32,7 @@ export default function MyDetailsPage() {
   useEffect(() => {
     setErrMsg('')
   }, [editedDetails])
+
 
   const handleSubmit = (e) => {
     e.preventDefault()
@@ -75,6 +77,16 @@ export default function MyDetailsPage() {
           <strong>Name</strong> {userDetails.firstName} {userDetails.lastName}<br />
           <strong>Email</strong> {userDetails.email}<br />
           <strong>Instrument</strong> {userDetails.instrument}<br />
+          <strong>Messages </strong>
+          <Icon icon="noto-v1:party-popper" width="20" height="20" rotate={3} />
+          <em> feature coming soon! </em>
+          <Icon icon="noto-v1:party-popper" width="20" height="20" />
+          {/* <ul>
+            <li><strong>To send Invoice</strong>{userDetails.messages.invoiceSend ? userDetails.messages.invoiceSend : <em> unset</em>}</li>
+            <li><strong>Invoice Reminder</strong>{userDetails.messages.invoiceReminder ? userDetails.messages.invoiceReminder : <em> unset</em>}</li>
+            <li><strong>Late student</strong>{userDetails.messages.lateForLesson ? userDetails.messages.lateForLesson : <em> unset</em>}</li>
+            <li><strong>Absent student</strong>{userDetails.messages.absentFromLesson ? userDetails.messages.absentFromLesson : <em> unset</em>}</li>
+          </ul> */}
       </p>
       {successMsg ? <p className='success-msg'>{successMsg}</p> : null}
       {clicked ? 
@@ -125,6 +137,7 @@ export default function MyDetailsPage() {
                   </Form.Group>
                   <Form.Group>
                       <Button type="submit" disabled={!editedDetails.firstName || !editedDetails.lastName || !editedDetails.email }>Save</Button>
+                      <Button variant='danger' type="button" onClick={()=> setClicked(false)}>Cancel</Button>
                   </Form.Group>
                   
               </Form>
