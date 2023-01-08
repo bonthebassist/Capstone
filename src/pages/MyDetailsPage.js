@@ -56,7 +56,11 @@ export default function MyDetailsPage() {
                   setSuccesMsg('Updated details successfully')
                   setClicked(false)
                   setEditedDetails('')
-              }
+                }
+                if (response.data.matchedCount){
+                  setSuccesMsg('Nothing changed! Looks like your details are up to date.')
+                  setClicked(false)
+                }
             }).catch(error => {
                 console.log(error)
                 setErrMsg(`${error}`)
