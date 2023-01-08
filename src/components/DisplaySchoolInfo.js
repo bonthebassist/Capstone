@@ -14,6 +14,8 @@ function DisplaySchoolInfo() {
   const { auth } = useContext(AuthContext)
   const [schoolsData, setSchoolsData] = useState()
   const [studentData, setStudentData] = useState()
+  const [studentEmails, setStudentEmails] = useState([])
+  const [parentEmails, setParentEmails] = useState([])
   const navigate = useNavigate();
 
   function handleClick(path) { navigate(path); }
@@ -54,6 +56,19 @@ function DisplaySchoolInfo() {
           return el.schoolName === schoolName
         })
         setStudentData(actualStudents)
+
+        console.log(actualStudents)
+        let studentEmailArray = actualStudents.map((student)=>{
+          return student.studentEmail
+        })
+        let joinedStudentEmails = studentEmailArray.join()
+        setStudentEmails(joinedStudentEmails[0])
+
+        let parentEmailArray = actualStudents.map((student)=>{
+          return student.parentEmail
+        })
+        let joinedParentEmails = parentEmailArray.join()
+        setParentEmails(joinedParentEmails[0])
       })
   }, [auth])
 
@@ -74,12 +89,20 @@ function DisplaySchoolInfo() {
               </Card.Body>
             </Card>
             <Card className='add-card' >
-              <Card.Body>
+              <Card.Body onClick={(e) => {
+                e.preventDefault();
+                console.log(studentEmails)
+                window.location.href = `mailto:${studentEmails}?cc=${parentEmails}`;
+              }}>
                 <Card.Title>All students</Card.Title>
               </Card.Body>
             </Card>
             <Card className='add-card' >
-              <Card.Body>
+              <Card.Body onClick={(e) => {
+                e.preventDefault();
+                console.log(parentEmails)
+                window.location.href = `mailto:${parentEmails}`;
+              }}>
                 <Card.Title>All parents</Card.Title>
               </Card.Body>
             </Card>
