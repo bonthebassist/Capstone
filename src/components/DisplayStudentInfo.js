@@ -135,6 +135,7 @@ export default function DisplayStudentInfo() {
                 if (resp.data){
                 setAttendanceDoc(resp.data)
                 setAttSuccess(true)
+                setErrMsg('')
                 } else {
                 setErrMsg("No attendance found for that term, try adding a term!")
                 setAttSuccess(false)
@@ -144,8 +145,8 @@ export default function DisplayStudentInfo() {
 
     return (
         <div className='content-div'>
-            <h4>{nameArray[0]} {nameArray[1]}</h4>
-            <CardGroup>
+            <h2 className='page-title'>{nameArray[0]} {nameArray[1]}</h2>
+            {/* <CardGroup>
                 <Card className='add-card' >
                     <Card.Body> 
                         <Card.Title>Contact {studentDoc.parentFirstName}</Card.Title>
@@ -156,13 +157,15 @@ export default function DisplayStudentInfo() {
                         <Card.Title>Contact {studentDoc.studentFirstName}</Card.Title>
                     </Card.Body>
                 </Card>
-            </CardGroup>
+            </CardGroup> */}
             <h4>Details</h4>
             <p>
                 <strong>School</strong> {studentDoc.schoolName}<br />
                 <strong>Instrument</strong> {studentDoc.instrument}<br />
                 <strong>Lesson Type</strong> {studentDoc.lessonType}<br />
-                <strong>Year Level</strong> {studentDoc.yearLevel}
+                <strong>Year Level</strong> {studentDoc.yearLevel}<br />
+                <strong>{studentDoc.studentFirstName} Email</strong> {studentDoc.studentEmail}<br />
+                <strong>{studentDoc.parentFirstName} Email</strong> {studentDoc.parentEmail}
             </p>
 
 

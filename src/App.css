@@ -173,3 +173,8 @@ body {
   list-style-type: none;
   text-indent: none;
 }
+
+.page-title {
+  padding: 0.5em 0 0.5em 0;
+  text-decoration:underline;
+}
