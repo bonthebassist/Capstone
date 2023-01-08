@@ -11,10 +11,11 @@ export default function AttendancePage() {
   const { auth } = useContext(AuthContext)
   const [schools, setSchools] = useState()
   const [schoolNames, setSchoolNames] = useState()
-  const [attendanceData, setAttendanceData] = useState([])
+  const [attendanceData, setAttendanceData] = useState('')
   const [selectedTerm, setSelectedTerm] = useState()
   const [selectedYear, setSelectedYear] = useState()
-
+  const [errMsg, setErrMsg] = useState('')
+  const [successMsg, setSuccessMsg] = useState('')
   
   const navigate = useNavigate();
 
@@ -58,9 +59,19 @@ export default function AttendancePage() {
       console.log(fancyURL)
       axios.get(fancyURL, config)
         .then((resp) => {
-          console.log(resp.data)
-          setAttendanceData(oldArray => [...oldArray, resp.data])
-        });
+          console.log(resp.data.length)
+          if (resp.data.length != 0){
+            setErrMsg('')
+            setAttendanceData(oldArray => [...oldArray, resp.data])
+          } 
+          else {
+            setErrMsg("No attendance records found for that term, try adding a term to your students!")
+          }
+        })
+        .catch(error => {
+          console.log(error)
+          setErrMsg(`${error}`)
+      })
     }
   }
 
@@ -69,7 +80,7 @@ export default function AttendancePage() {
       <div className='content-div'>
       <Form.Group>
                 <Form.Label>Term</Form.Label>
-                <Form.Select value={selectedTerm} onChange={e => setSelectedTerm(e.target.value)}>
+                <Form.Select value={selectedTerm} onChange={e => {setErrMsg(''); setSelectedTerm(e.target.value)}}>
                   <option>Choose a Term</option>
                   <option value="1">1</option>
                   <option value="2">2</option>
@@ -84,11 +95,16 @@ export default function AttendancePage() {
                   <option value="2024">2024</option>
                 </Form.Select>
                 <Button className='buttons' onClick={populateTables}>Find</Button>
+                {!errMsg ? null : <p className='errmsg'>{errMsg}</p>}
+                {!successMsg ? null : <p className='success-msg'>{successMsg}</p>}
         </Form.Group>
-        {selectedTerm && selectedYear ? <h4>Term {selectedTerm} {selectedYear}</h4> : null}
+        
         {!attendanceData ? null :
+        (
           attendanceData.map((dataArray, i) => {
             return (
+              <>
+              {selectedTerm && selectedYear ? <h4>Term {selectedTerm} {selectedYear}</h4> : null}
               <MDBTable striped hover>
                 <MDBTableHead>
                   <tr>
@@ -120,9 +136,11 @@ export default function AttendancePage() {
                   })}
                 </MDBTableBody>
               </MDBTable>
-            )
-          })
-        }
+              </>
+        )
+
+                })
+        )}
         </div>
     </>
   );
