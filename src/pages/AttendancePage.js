@@ -79,24 +79,24 @@ export default function AttendancePage() {
     <>
       <div className='content-div'>
       <Form.Group>
-                <Form.Label>Term</Form.Label>
-                <Form.Select value={selectedTerm} onChange={e => {setErrMsg(''); setSelectedTerm(e.target.value)}}>
-                  <option>Choose a Term</option>
-                  <option value="1">1</option>
-                  <option value="2">2</option>
-                  <option value="3">3</option>
-                  <option value="4">4</option>
-                </Form.Select>
-                <Form.Label>Year</Form.Label>
-                <Form.Select value={selectedYear} onChange={e => setSelectedYear(e.target.value)}>
-                  <option>Choose a Year</option>
-                  <option value="2022">2022</option>
-                  <option value="2023">2023</option>
-                  <option value="2024">2024</option>
-                </Form.Select>
-                <Button className='buttons' onClick={populateTables}>Find</Button>
-                {!errMsg ? null : <p className='errmsg'>{errMsg}</p>}
-                {!successMsg ? null : <p className='success-msg'>{successMsg}</p>}
+          <Form.Label>Term</Form.Label>
+          <Form.Select value={selectedTerm} onChange={e => {setErrMsg(''); setSelectedTerm(e.target.value)}}>
+            <option>Choose a Term</option>
+            <option value="1">1</option>
+            <option value="2">2</option>
+            <option value="3">3</option>
+            <option value="4">4</option>
+          </Form.Select>
+          <Form.Label>Year</Form.Label>
+          <Form.Select value={selectedYear} onChange={e => setSelectedYear(e.target.value)}>
+            <option>Choose a Year</option>
+            <option value="2022">2022</option>
+            <option value="2023">2023</option>
+            <option value="2024">2024</option>
+          </Form.Select>
+          <Button className='buttons' onClick={populateTables}>Find</Button>
+          {!errMsg ? null : <p className='errmsg'>{errMsg}</p>}
+          {!successMsg ? null : <p className='success-msg'>{successMsg}</p>}
         </Form.Group>
         
         {!attendanceData ? null :
@@ -120,7 +120,7 @@ export default function AttendancePage() {
                 <MDBTableBody>
                   {dataArray.map((attendanceObj) => {
                     return (
-                      <tr>
+                      <tr  onClick={() => handleClick(`/DisplayStudent/${attendanceObj.studentName}`)}>
                         <th scope='row'>{attendanceObj.studentName}</th>
                         {attendanceObj.attendance.map((entry, i) => {
                           if (!entry.record){
