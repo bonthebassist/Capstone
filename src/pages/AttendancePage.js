@@ -10,6 +10,7 @@ import { Button, Form } from 'react-bootstrap';
 export default function AttendancePage() {
   const { auth } = useContext(AuthContext)
   const [schools, setSchools] = useState()
+  const [schoolNames, setSchoolNames] = useState()
   const [attendanceData, setAttendanceData] = useState([])
   const [selectedTerm, setSelectedTerm] = useState()
   const [selectedYear, setSelectedYear] = useState()
@@ -21,7 +22,7 @@ export default function AttendancePage() {
   
   //config for API calls
 
-  //get schools inorder to make next API call
+  //get schools inorder for populate table call
   useEffect(() => {
     const config = {
       headers:{
@@ -29,25 +30,16 @@ export default function AttendancePage() {
         'x-access-token': auth.token
       }
     };
-    axios.get(`http://localhost:4001/user?email=${auth.email}`, config)
+    axios.get(`http://localhost:4000/get/schoolsBytutorID?tutor=${auth.user_id}`, config)
       .then((resp) => {
-        let schoolsArray = resp.data.schools
+        let schoolsArray = resp.data
+        let schoolIDsArray = schoolsArray.map((school) => { return school._id })
         let schoolNamesArray = schoolsArray.map((school) => { return school.schoolName })
-        console.log(schoolNamesArray)
-        setSchools(schoolNamesArray)
+        console.log(schoolIDsArray)
+        setSchools(schoolIDsArray)
+        setSchoolNames(schoolNamesArray)
       });
   }, [auth.token, auth.email])
-  //populate attendanceData state
-  // useEffect(() => {
-  //   console.log("seoncd useEffect: " + auth.token)
-  //   for (let i in schools) {
-  //     axios.get(`http://localhost:4001/attendanceSchool?email=${auth.email}&school=${schools[i]}`, config)
-  //       .then((resp) => {
-  //         console.log(resp.data)
-  //         setAttendanceData(oldArray => [...oldArray, resp.data])
-  //       });
-  //   }
-  // }, [schools])
 
   // populate attendanceData once FIND button is clicked
   const populateTables = () => {
@@ -61,7 +53,10 @@ export default function AttendancePage() {
     const schoolDate = "T" +selectedTerm+selectedYear
     console.log(schoolDate)
     for (let i in schools) {
-      axios.get(`http://localhost:4001/attendanceSchool?email=${auth.email}&school=${schools[i]}&schoolDate=${schoolDate}`, config)
+      console.log(schools)
+      let fancyURL = `http://localhost:4000/get/attendanceBySchool?tutor=${auth.user_id}&school=${schools[i]}&schoolDate=${schoolDate}`
+      console.log(fancyURL)
+      axios.get(fancyURL, config)
         .then((resp) => {
           console.log(resp.data)
           setAttendanceData(oldArray => [...oldArray, resp.data])
@@ -71,7 +66,6 @@ export default function AttendancePage() {
 
   return (
     <>
-      <DashboardElements />
       <div className='content-div'>
       <Form.Group>
                 <Form.Label>Term</Form.Label>
@@ -89,7 +83,7 @@ export default function AttendancePage() {
                   <option value="2023">2023</option>
                   <option value="2024">2024</option>
                 </Form.Select>
-                <Button onClick={populateTables}>Find</Button>
+                <Button className='buttons' onClick={populateTables}>Find</Button>
         </Form.Group>
         {selectedTerm && selectedYear ? <h4>Term {selectedTerm} {selectedYear}</h4> : null}
         {!attendanceData ? null :
@@ -98,32 +92,26 @@ export default function AttendancePage() {
               <MDBTable striped hover>
                 <MDBTableHead>
                   <tr>
-                    <th style={{ fontWeight: 'bold', fontSize: '1.5em' }} colSpan={12} >{schools[i]} {dataArray.schoolDate}</th>
+                    <th style={{ fontWeight: 'bold', fontSize: '1.5em' }} colSpan={12} >{schoolNames[i]}</th>
                   </tr>
                   <tr>
                     <th>Student Name</th>
-                    <th scope='col'>1</th>
-                    <th scope='col'>2</th>
-                    <th scope='col'>3</th>
-                    <th scope='col'>4</th>
-                    <th scope='col'>5</th>
-                    <th scope='col'>6</th>
-                    <th scope='col'>7</th>
-                    <th scope='col'>8</th>
-                    <th scope='col'>9</th>
-                    <th scope='col'>10</th>
+                    {dataArray[0].attendance.map((element)=>{return <th>{element.week}</th>})}
                     <th scope='col'>Count</th>
                     <th scope='col'>Goal</th>
                   </tr>
                 </MDBTableHead>
                 <MDBTableBody>
                   {dataArray.map((attendanceObj) => {
-                    console.log(attendanceObj.attendanceArray.sort())
                     return (
                       <tr>
-                        <th scope='row'>{attendanceObj.studentFirstName} {attendanceObj.studentLastName}</th>
-                        {attendanceObj.attendanceArray.map((entry, i) => {
-                          return <td key={entry + i}>{entry.slice(2)}</td>
+                        <th scope='row'>{attendanceObj.studentName}</th>
+                        {attendanceObj.attendance.map((entry, i) => {
+                          if (!entry.record){
+                            return <td key={i}>-</td>
+                          } else {
+                          return <td key={i}>{entry.record}</td>
+                          }
                         })}
                         <td style={{ fontWeight: 'bold', textAlign: 'center' }}>{attendanceObj.lessonCount}</td>
                         <td style={{ textAlign: 'center' }}>{attendanceObj.goalLessonCount}</td>
@@ -139,65 +127,6 @@ export default function AttendancePage() {
     </>
   );
 }
-
-{/* <MDBTable striped hover>
-            <MDBTableHead>
-              <tr>
-                <th colSpan={12} >{schoolsArray[0].schoolName}</th>
-              </tr>
-              <tr>
-                <th>Student Name</th>
-                <th scope='col'>1</th>
-                <th scope='col'>2</th>
-                <th scope='col'>3</th>
-                <th scope='col'>4</th>
-                <th scope='col'>5</th>
-                <th scope='col'>6</th>
-                <th scope='col'>7</th>
-                <th scope='col'>8</th>
-                <th scope='col'>9</th>
-                <th scope='col'>10</th>
-                <th scope='col'>Count</th>
-                <th scope='col'>Goal</th>
-                <th scope='col'>To Catch up</th>
-              </tr>
-            </MDBTableHead>
-            <MDBTableBody>
-              <tr>
-                <th scope='row'>{studentName}</th>
-                {attendanceCols}
-                <td style={{ fontWeight: 'bold', textAlign: 'center' }}>{lessonCount}</td>
-                <td style={{ textAlign: 'center' }}>{goal}</td>
-                <td style={{ textAlign: 'center' }}>{catchups ? catchups : "none"}</td>
-              </tr>
-            </MDBTableBody>
-          </MDBTable> */}
-
-  // const schoolsArray = [
-  //   {
-  //     schoolName: "Hills School",
-  //     students: [
-  //       {
-  //         studentName: "Ashley K",
-  //         attendance: [{ "term1": ["P", "P", "A", "L", "P", "EA", "EA", "P", "EA", null] }]
-  //       }]
-  //   }]
-  // const studentName = schoolsArray[0].students[0].studentName
-  // const studentAttendance = schoolsArray[0].students[0].attendance[0].term1
-  // const attendanceCols = studentAttendance.map((entry) =>
-  //   <td key={entry}>{entry}</td>);
-  // const count = (attendanceArr) => {
-  //   let lessonCount = 0
-  //   for (let i in attendanceArr) {
-  //     if (attendanceArr[i] === "P" || attendanceArr[i] === "L" || attendanceArr[i] === "C" || attendanceArr[i] === "A") {
-  //       lessonCount++
-  //     }
-  //   }
-  //   return lessonCount
-  // }
-  // const lessonCount = count(studentAttendance)
-  // const goal = 8
-  // let catchups = goal - lessonCount
 
 
 

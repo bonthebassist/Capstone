@@ -124,8 +124,8 @@ export default function DisplayStudentInfo() {
         };
         console.log(`populate diary queries tutor=${auth.user_id}, student=${studentDoc._id}, schoolDate=${schoolDateSearch}`)
         let URL = `http://localhost:4000/get/attendanceByStudent?tutor=63b9ea60f0ffd9c3b185a948&student=63ba044f3b01886a7f710417&schoolDate=T12023`
-        let fancyURL = `http://localhost:4000/get/attendanceByStudent?tutor=${auth.user_id}&student=${studentDoc._id}}&schoolDate=${schoolDateSearch}`
-        axios.get(URL, config)
+        let fancyURL = `http://localhost:4000/get/attendanceByStudent?tutor=${auth.user_id}&student=${studentDoc._id}&schoolDate=${schoolDateSearch}`
+        axios.get(fancyURL, config)
             .then((resp) => {
                 console.log(resp.data)
                 setAttendanceDoc(resp.data)

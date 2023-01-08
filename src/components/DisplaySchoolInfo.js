@@ -61,8 +61,6 @@ function DisplaySchoolInfo() {
         <Button>Contact admin</Button>
         <h4>Quick Links</h4>
         <a href={schoolsData.usefulLinks[0].linkURL}>{schoolsData.usefulLinks[0].linkTitle}</a>
-        <h4>Attendance</h4>
-        <table></table>
         <h4>Students</h4>
         {studentData ? studentData.map((student)=>{
         return (
