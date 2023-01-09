@@ -12,17 +12,11 @@ A web application frontend that has features that an instrumental tutor can util
 # How to run
 - Clone this frontend project to your local.
 - In the project directory, run
- npm install (if there are peer dependecy issues with npm install, you can try npm install --legacy-peer-deps)
- npm start
+  npm install (if there are peer dependecy issues with npm install, you can try npm install --legacy-peer-deps)
+  npm start
  your default browser should automatically open to localhost:3000
-- Clone the associated backend to your local
-- You will need to create a .env file with 3 variables
-  -API_PORT=4000
-  -MONGO_URI= (this should look something like mongodb://localhost:27017/chutaDB)
-  -TOKEN_KEY=(Long string of numbers and letters)
-- Once this is created, in the project directory, run
-npm run devStart
+- Clone the associated backend to your local and follow instructions from backend README
  
 - Backend Repository: https://github.com/bonthebassist/Capstone-Backend.
 
-The app and its functionality should be ready to use.
+After installing backend, the app and its functionality should be ready to use.
