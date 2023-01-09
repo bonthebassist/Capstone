@@ -1,5 +1,5 @@
 import React from 'react'
-import { NavLink } from 'react-router-dom';
+import { NavLink, Link } from 'react-router-dom';
 import { useRef, useState, useEffect, useContext } from 'react'
 import {AuthContext} from "../context/AuthProvider"
 import axios from 'axios';
@@ -106,7 +106,9 @@ function Login() {
             <Button type="submit">Sign In</Button>
             <p>
             Need An Account? <br />
-            <NavLink to='/Register'>Sign Up</NavLink>
+            <span className="login-link">
+                        <Link to="/Register">Sign Up</Link>
+            </span>
           </p>
           </Form>
           

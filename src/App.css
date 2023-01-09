@@ -27,7 +27,6 @@ body {
 
 .add-card {
   color:rgb(128, 128, 128);
-  background-color: rgb(128, 128, 128);
 }
 
 .add-card :hover {
@@ -43,7 +42,6 @@ body {
   min-height: 150px;
 }
 .school-card :hover{
-  background-color: #0d6efd;
   color:white
 }
 
@@ -106,6 +104,7 @@ body {
 
 .student-card {
   min-height: 70px;
+  background-color: #fbfbfb;
 }
 .student-card-button {
   text-align: right;
@@ -182,4 +181,24 @@ body {
 #invoice-title{
   text-align: center;
   padding: 20px
+}
+
+.login-link a {
+  text-decoration: none;
+  font-size: 1.3em;
+}
+
+.stealth-link a {
+  text-decoration: none;
+  color:#333
+}
+
+.stealth-link a:hover {
+  text-decoration: none;
+  color:#333
+}
+
+h5 {
+  padding: 10px 10px 10px 0px;
+  text-decoration: underline;
 }

@@ -46,7 +46,7 @@ export default function SchoolsPage() {
   let cardsMap = schoolsData.map((school)=>{
     let card = (
       <MDBCard className='school-card'>
-      <MDBCardBody onClick={() => handleClick(`/DisplaySchool/${school.schoolName}`)}>
+      <MDBCardBody style={{backgroundColor: `${school.schoolColor}`}} onClick={() => handleClick(`/DisplaySchool/${school.schoolName}`)}>
       <MDBCardTitle className='school-card-title'>{school.schoolName}</MDBCardTitle>
       </MDBCardBody>
     </MDBCard>
@@ -57,7 +57,7 @@ export default function SchoolsPage() {
   return (
     <>
     <div className='content-div'>
-    <h4>Welcome {auth.firstName}! </h4>
+      <h2 className='page-title'>Schools</h2>
       <link
         href="https://use.fontawesome.com/releases/v5.15.1/css/all.css"
         rel="stylesheet"
