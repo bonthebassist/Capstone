@@ -46,7 +46,7 @@ export default function SchoolsPage() {
   let cardsMap = schoolsData.map((school)=>{
     let card = (
       <MDBCard className='school-card'>
-      <MDBCardBody style={{backgroundColor: `${school.schoolColor}`}} onClick={() => handleClick(`/DisplaySchool/${school.schoolName}`)}>
+      <MDBCardBody style={{cursor:'pointer'}} onClick={() => handleClick(`/DisplaySchool/${school.schoolName}`)}>
       <MDBCardTitle className='school-card-title'>{school.schoolName}</MDBCardTitle>
       </MDBCardBody>
     </MDBCard>
@@ -64,7 +64,7 @@ export default function SchoolsPage() {
     	/>
     { schoolsData ? cardsMap : null}
     <MDBCard className='add-card' >
-      <MDBCardBody onClick={() => handleClick(`NewSchoolForm`)}> 
+      <MDBCardBody style={{cursor:'pointer'}} onClick={() => handleClick(`NewSchoolForm`)}> 
       <MDBCardTitle> <MDBIcon fas icon="plus" /> Add a School</MDBCardTitle>
       </MDBCardBody>
     </MDBCard>

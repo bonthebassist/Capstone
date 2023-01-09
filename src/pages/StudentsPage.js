@@ -44,7 +44,7 @@ export default function StudentsPage() {
   let cardsMap = studentData.map((student) => {
     let card = (
       <MDBCard className='student-card'>
-        <MDBCardBody onClick={() => handleClick(`/DisplayStudent/${student.studentFirstName + " " + student.studentLastName}`)}>
+        <MDBCardBody style={{cursor:'pointer'}} onClick={() => handleClick(`/DisplayStudent/${student.studentFirstName + " " + student.studentLastName}`)}>
           <MDBCardTitle>{student.studentFirstName} {student.studentLastName}</MDBCardTitle>
           <MDBCardText>
             {student.schoolName} . Year {student.yearLevel} . {student.instrument}
@@ -61,7 +61,7 @@ export default function StudentsPage() {
       <div className='content-div'>
       <h2 className='page-title'>Students</h2>
       <MDBCard className='add-card' >
-        <MDBCardBody onClick={() => handleClick(`NewStudent`)}>
+        <MDBCardBody style={{cursor:'pointer'}} onClick={() => handleClick(`NewStudent`)}>
           <MDBCardTitle> <MDBIcon fas icon="plus" /> Add a Student</MDBCardTitle>
         </MDBCardBody>
       </MDBCard>

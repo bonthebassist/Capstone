@@ -107,7 +107,7 @@ export default function AttendancePage() {
           <>
           <h4>Term {selectedTerm} {selectedYear}</h4>
           <p>
-                <strong>Key: </strong><strong>P</strong> Present | <strong>A</strong> Absent without notice | <strong>L</strong> Late | <strong>E</strong> Excused absence
+            <strong>Key: </strong><strong>P</strong> Present | <strong>A</strong> Absent without notice | <strong>L</strong> Late | <strong>E</strong> Excused absence
           </p>
           </> 
           : null}
@@ -129,8 +129,8 @@ export default function AttendancePage() {
                 <MDBTableBody>
                   {dataArray.map((attendanceObj) => {
                     return (
-                      <tr  onClick={() => handleClick(`/DisplayStudent/${attendanceObj.studentName}`)}>
-                        <th scope='row'>{attendanceObj.studentName}</th>
+                      <tr>
+                        <th style={{cursor:'pointer'}} onClick={() => handleClick(`/DisplayStudent/${attendanceObj.studentName}`)} scope='row'>{attendanceObj.studentName}</th>
                         {attendanceObj.attendance.map((entry, i) => {
                           if (!entry.record){
                             return <td key={i}>-</td>

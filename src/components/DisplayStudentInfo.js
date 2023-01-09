@@ -185,7 +185,7 @@ export default function DisplayStudentInfo() {
             <h2 className='page-title'>{nameArray[0]} {nameArray[1]}</h2>
             <CardGroup>
                 <Card className='add-card' >
-                    <Card.Body onClick={(e) => {
+                    <Card.Body style={{cursor:'pointer'}} onClick={(e) => {
                 e.preventDefault();
                 window.location.href = `mailto:${studentDoc.parentEmail}`;
               }}> 
@@ -193,7 +193,7 @@ export default function DisplayStudentInfo() {
                     </Card.Body>
                 </Card>
                 <Card className='add-card' >
-                    <Card.Body onClick={(e) => {
+                    <Card.Body style={{cursor:'pointer'}} onClick={(e) => {
                 e.preventDefault();
                 window.location.href = `mailto:${studentDoc.studentEmail}`;
               }}> 
@@ -207,8 +207,6 @@ export default function DisplayStudentInfo() {
                 <strong>Instrument</strong> {studentDoc.instrument}<br />
                 <strong>Lesson Type</strong> {studentDoc.lessonType}<br />
                 <strong>Year Level</strong> {studentDoc.yearLevel}<br />
-                <strong>{studentDoc.studentFirstName} Email</strong> {studentDoc.studentEmail}<br />
-                <strong>{studentDoc.parentFirstName} Email</strong> {studentDoc.parentEmail}
             </p>
             {!clicked ? null :
                         <>

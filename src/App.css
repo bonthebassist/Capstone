@@ -42,7 +42,8 @@ body {
   min-height: 150px;
 }
 .school-card :hover{
-  color:white
+  color:white;
+  background-color: #0d6efd;
 }
 
 .school-card-title {
