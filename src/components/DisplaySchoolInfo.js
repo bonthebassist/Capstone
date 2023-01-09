@@ -1,6 +1,7 @@
 import React from 'react'
 import { useEffect, useState, useContext } from 'react'
-import { Form, useNavigate } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom';
+import Form from 'react-bootstrap/Form';
 import { useParams } from 'react-router-dom'
 import { Button, Card, CardGroup } from 'react-bootstrap'
 import axios from 'axios'
@@ -21,6 +22,10 @@ function DisplaySchoolInfo() {
   const [newAdmin, setNewAdmin] = useState({
     contactName: '',
     contactEmail:''
+  })
+  const [newLink, setNewLink] = useState({
+    linkTitle: '',
+    linkURL:''
   })
 
   const navigate = useNavigate();
@@ -79,12 +84,52 @@ function DisplaySchoolInfo() {
       })
   }, [auth])
 
+  const config = {
+    headers: {
+        'Content-type': 'application/json',
+        'x-access-token': auth.token
+    }
+  };
+
   const saveNewAdmin = () => {
     const reqBody = {
       school_id: schoolsData._id,
       contactName: newAdmin.contactName,
       contactEmail: newAdmin.contactEmail
     }
+    
+    axios.put(`http://localhost:4000/put/schoolAdminAdd`, reqBody, config)
+            .then(response => {
+                console.log(response.data)
+                if(response.data.modifiedCount){
+                  setAddAdminClick(false)
+                }
+            }).catch(error => {
+                console.log(error)
+                alert(error)
+            })
+    
+    console.log(reqBody)
+  }
+
+  const saveNewLink = () => {
+    const reqBody = {
+      school_id: schoolsData._id,
+      linkTitle: newLink.linkTitle,
+      linkURL: newLink.linkURL
+    }
+    
+    axios.put(`http://localhost:4000/put/schoolLinksAdd`, reqBody, config)
+            .then(response => {
+                console.log(response.data)
+                if(response.data.modifiedCount){
+                  setAddLinkClick(false)
+                }
+            }).catch(error => {
+                console.log(error)
+                alert(error)
+            })
+    
     console.log(reqBody)
   }
  
@@ -92,17 +137,24 @@ function DisplaySchoolInfo() {
     <>
       {!schoolsData ? null : (
         <div className='content-div'>
-          <h2 className='page-title'>{schoolName}</h2>
-          <h5>Contacts</h5>
+          <h2 className='page-title' style={{color: `${schoolsData.schoolColor}`}}>{schoolName}</h2>
+          <h5 style={{color: `${schoolsData.schoolColor}`}}>Contacts</h5>
           <CardGroup>
-            <Card className='add-card' >
-              <Card.Body onClick={(e) => {
-                e.preventDefault();
-                window.location.href = `mailto:${schoolsData.schoolAdmin[0].contactEmail}`;
-              }}>
-                <Card.Title>{schoolsData.schoolAdmin[0].contactName}</Card.Title>
-              </Card.Body>
-            </Card>
+            {
+              schoolsData.schoolAdmin.map((administrator) => {
+              return (
+                <Card className='add-card'>
+                  <Card.Body onClick={(e) => {
+                    e.preventDefault();
+                    window.location.href = `mailto:${administrator.contactEmail}`;
+                  }}>
+                    <Card.Title>{administrator.contactName}</Card.Title>
+                  </Card.Body>
+                </Card>
+                )
+              })
+            }
+            
             <Card className='add-card' >
               <Card.Body onClick={(e) => {
                 e.preventDefault();
@@ -127,7 +179,10 @@ function DisplaySchoolInfo() {
               </Card.Body>
             </Card>
           </CardGroup>
-          {/* {!setAddAdminClick ? null : (
+          {!addAdminClick ? null : (
+            <>
+            
+            <h5 style={{color: `${schoolsData.schoolColor}`}}>Add a School contact</h5>
             <Form>
               <Form.Group className="mb-3" controlId="formBasicEmail">
                 <Form.Label>Administrator Name</Form.Label>
@@ -141,15 +196,32 @@ function DisplaySchoolInfo() {
                 <Form.Label>Administrator Email</Form.Label>
                 <Form.Control
                 type='email'
-                value={newAdmin.contactName}
+                value={newAdmin.contactEmail}
                 onChange={(e)=> setNewAdmin({...newAdmin, contactEmail: e.target.value})}
                 />
               </Form.Group>
               <Button onClick={saveNewAdmin}>Save</Button>
+              <Button variant='danger' onClick={()=>setAddAdminClick(false)}>Cancel</Button>
             </Form>
-          )} */}
-          <h5>Quick Links</h5>
+            </>
+          )}
+
+          <h5 style={{color: `${schoolsData.schoolColor}`}}>Quick Links</h5>
           <CardGroup>
+          {
+              schoolsData.usefulLinks.map((link) => {
+              return (
+                <Card className='add-card'>
+                  <Card.Body onClick={(e) => {
+                    e.preventDefault();
+                    window.location.href = `${link.linkURL}`;
+                  }}>
+                    <Card.Title>{link.linkTitle}</Card.Title>
+                  </Card.Body>
+                </Card>
+                )
+              })
+            }
             <Card className='add-card' >
               <Card.Body onClick={(e) => {
                 e.preventDefault();
@@ -165,29 +237,33 @@ function DisplaySchoolInfo() {
             </Card>
           </CardGroup>
 
-          {/* {!setAddLinkClick ? null : (
+          {!addLinkClick ? null : (
+            <>
+            <h5 style={{color: `${schoolsData.schoolColor}`}}>Add a Link</h5>
             <Form>
               <Form.Group>
-                <Form.Label>Administrator Name</Form.Label>
+                <Form.Label>Link Title</Form.Label>
                 <Form.Control
                 type='text'
-                value={newAdmin.contactName}
-                onChange={(e)=> setNewAdmin({...newAdmin, contactName: e.target.value})}
+                value={newLink.linkTitle}
+                onChange={(e)=> setNewLink({...newLink, linkTitle: e.target.value})}
                 />
               </Form.Group>
               <Form.Group>
-                <Form.Label>Administrator Email</Form.Label>
+                <Form.Label>Link URL</Form.Label>
                 <Form.Control
-                type='email'
-                value={newAdmin.contactName}
-                onChange={(e)=> setNewAdmin({...newAdmin, contactEmail: e.target.value})}
+                type='text'
+                value={newLink.linkURL}
+                onChange={(e)=> setNewLink({...newLink, linkURL: e.target.value})}
                 />
               </Form.Group>
-              <Button onClick={saveNewAdmin}>Save</Button>
+              <Button onClick={saveNewLink}>Save</Button>
+              <Button variant='danger' onClick={()=>setAddLinkClick(false)}>Cancel</Button>
             </Form>
-          )} */}
+            </>
+          )}
 
-          <h4>Students</h4>
+          <h5 style={{color: `${schoolsData.schoolColor}`}}>Students</h5>
           {studentData ? studentData.map((student) => {
             return (
               <CardGroup>
