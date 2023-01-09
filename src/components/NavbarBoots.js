@@ -7,7 +7,9 @@ import { AuthContext } from "../context/AuthProvider"
 import { LinkContainer } from 'react-router-bootstrap';
 import { Button } from 'react-bootstrap';
 import HorizontalLogo from '../Chuta-logo-horizontal-01.svg'
+import HorizontalLogoWhite from '../Chuta-logo-horizontal-white-01.svg'
 import { Link } from 'react-router-dom';
+import { Icon } from '@iconify/react';
 
 function NavbarBoots() {
   const { auth, setAuth } = useContext(AuthContext)
@@ -25,15 +27,16 @@ function NavbarBoots() {
             <LinkContainer to="/">
             <Navbar.Brand to="/" id="site-title">
               <img
-                src={HorizontalLogo}
+                src={HorizontalLogoWhite}
                 height='40'
                 alt='Chuta'
                 loading='lazy'
               />
             </Navbar.Brand>
             </LinkContainer>
-            <Navbar.Toggle aria-controls={`offcanvasNavbar-expand-${expand}`} />
+            <Navbar.Toggle aria-controls={`offcanvasNavbar-expand-${expand}`}><Icon icon="charm:menu-hamburger" color="white" width="30" height="30" /></Navbar.Toggle>
             <Navbar.Offcanvas
+            
               id={`offcanvasNavbar-expand-${expand}`}
               aria-labelledby={`offcanvasNavbarLabel-expand-${expand}`}
               placement="end"
@@ -61,11 +64,9 @@ function NavbarBoots() {
                   </LinkContainer>
                   </> 
                   :
-                  // : null}
-                  // {auth.user_id ? 
                   <>
                   <LinkContainer to="/Schools">
-                    <Nav.Link>Schools</Nav.Link>
+                    <Nav.Link className='stealth-link'>Schools</Nav.Link>
                   </LinkContainer>
                   <LinkContainer to="/Students">
                     <Nav.Link>Students</Nav.Link>
@@ -79,10 +80,9 @@ function NavbarBoots() {
                   <LinkContainer to="/MyDetails">
                     <Nav.Link>My Details</Nav.Link>
                   </LinkContainer>
-                  <Button variant="light" onClick={Logout}><Link to="/">Logout</Link></Button>
+                  <Button variant="light" onClick={Logout}><span className='stealth-link'><Link to="/">Logout</Link></span></Button>
                   </>
                   }
-                  
                   
                   </Nav>
               </Offcanvas.Body>
