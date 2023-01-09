@@ -1,70 +1,28 @@
-# Getting Started with Create React App
+#CHUTA - Instrumental Tutoring Personal Management System
+Frontend app created for my Capstone Project using Reactjs, Javascript. Should be installed and connected with my Capstone Backend for full stack functionalities.
+A web application frontend that has features that an instrumental tutor can utilise, it connects with a backend and consumes the api it offers.
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+#Some features are:
+- User authentication            
+- Basic authentication (bcrypt for salt and hash)
+- Store school main contacts
+- Log attendance and lesson notes for each student
+- Contact all students (parents CC'ed) or parents of a school in a click
+- Simple and aesthethic UI
+#How to run
+- Clone this frontend project to your local.
+- In the project directory, run
+ npm install (if there are peer dependecy issues with npm install, you can try npm install --legacy-peer-deps)
+ npm start
+ your default browser should automatically open to localhost:3000
+- Clone the associated backend to your local
+- You will need to create a .env file with 3 variables
+  -API_PORT=4000
+  -MONGO_URI= (this should look something like mongodb://localhost:27017/chutaDB)
+  -TOKEN_KEY=(Long string of numbers and letters)
+- Once this is created, in the project directory, run
+npm run devStart
+ 
+- Backend Repository: https://github.com/bonthebassist/Capstone-Backend.
 
-## Available Scripts
-
-In the project directory, you can run:
-
-### `npm start`
-
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
-
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
-
-### `npm test`
-
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
-
-### `npm run build`
-
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
-
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
-
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `npm run eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
-
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
-
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+The app and its functionality should be ready to use.
