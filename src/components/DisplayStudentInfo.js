@@ -1,6 +1,6 @@
 import { useEffect, useState, useContext } from 'react'
 import { Button, Form, Accordion, ButtonGroup, Card, CardGroup, Container } from 'react-bootstrap';
-import { useParams } from 'react-router-dom';
+import { useParams, Link } from 'react-router-dom';
 import axios from 'axios';
 import { AuthContext } from '../context/AuthProvider';
 import { MDBTable, MDBTableHead, MDBTableBody } from 'mdb-react-ui-kit';
@@ -34,6 +34,7 @@ export default function DisplayStudentInfo() {
     const [clicked, setClicked] = useState(false)
     const [editedAttendance, setEditedAttendance] = useState('')
     const [clickedEditAtt, setClickedEditAtt] = useState(false)
+    const [deleteSuccess, setDeleteSuccess] = useState(false)
 
     const showForm = () => {
         if (!showShow) {
@@ -124,8 +125,6 @@ export default function DisplayStudentInfo() {
         axios.put(`http://localhost:4000/put/attendanceInput`, reqBodyAtt2, config)
             .then(response => {
                 console.log(response.data)
-                setClickedEditAtt(false)
-                populateDiary()
             }).catch(error => {
                 console.log(error)
                 alert(error)
@@ -138,6 +137,19 @@ export default function DisplayStudentInfo() {
         clickedEdit()
         setSuccessMsg('Updated student details')
         setErrMsg('Could not update details')
+    }
+
+    const deleteStudent = (e) => {
+        e.preventDefault()
+        console.log("studentDoc.studentFirstName" + " to be deleted")
+        axios.delete(`http://localhost:4000/delete/student?student=${studentDoc._id}`, config)
+            .then(response => {
+                console.log(response.data)
+                setDeleteSuccess(true)
+            }).catch(error => {
+                console.log(error)
+                alert(error)
+            })
     }
 
     const populateDiary = () => {
@@ -295,10 +307,13 @@ export default function DisplayStudentInfo() {
                           <Button variant="dark" className="button" type="submit" onClick={submitEdit}>
                             Save
                           </Button>
-                          <Button variant="danger" className="button" type="submit" onClick={clickedEdit}>
+                          <Button variant="light" className="button" type="button" onClick={clickedEdit}>
                             Cancel
                           </Button>
-                          {/* <h4>Back to <NavLink to="/Schools">Schools</NavLink> | <NavLink to="/Students">Students</NavLink></h4> */}
+                          <Button variant="danger" className="button" type="button" onClick={deleteStudent}>
+                            Delete
+                          </Button>
+                          {!deleteSuccess ? null : <p className='success-msg'>Deleted succesfully. Go back to <Link to='/Students'>Students</Link></p>}
                         </Form>
                       </>
             }
