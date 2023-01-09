@@ -8,8 +8,11 @@ import { AuthContext } from '../context/AuthProvider';
 import { Container } from 'react-bootstrap';
 
 export default function NewSchoolForm() {
+
+  //Context
   const { auth } = useContext(AuthContext)
 
+  //States
   const [School, setSchool] = useState({ schoolName: '' })
   const [UsefulLinks, setUsefulLinks] = useState([])
   const [SchoolAdminDetails, setSchoolAdminDetails] = useState({
@@ -19,22 +22,24 @@ export default function NewSchoolForm() {
   const [SchoolColor, setSchoolColor] = useState('')
   const [success, setSuccess] = useState(false);
 
-  const reqBody = 
-    {
-      "tutor_id": auth.user_id,
-      "schoolName": School.schoolName,
-      "schoolAdmin": {
-          "contactName":SchoolAdminDetails.title,
-          "contactEmail":SchoolAdminDetails.email
-      },
-      "usefulLinks":{
-          "linkTitle":UsefulLinks.linkTitle,
-          "linkURL": UsefulLinks.linkURL
-      },
-      "schoolColor": SchoolColor
+  //Request body for adding the school
+  const reqBody =
+  {
+    "tutor_id": auth.user_id,
+    "schoolName": School.schoolName,
+    "schoolAdmin": {
+      "contactName": SchoolAdminDetails.title,
+      "contactEmail": SchoolAdminDetails.email
+    },
+    "usefulLinks": {
+      "linkTitle": UsefulLinks.linkTitle,
+      "linkURL": UsefulLinks.linkURL
+    },
+    "schoolColor": SchoolColor
   }
-  
 
+
+  //Axios headers configuration
   const config = {
     headers: {
       'Content-type': 'application/json',
@@ -42,8 +47,10 @@ export default function NewSchoolForm() {
     }
   };
 
+  // url for Axios post
   const url = `http://localhost:4000/post/school`;
 
+  //Post new school to DB
   const handleClick = (e) => {
     e.preventDefault()
     axios.post(url, reqBody, config)
@@ -56,6 +63,7 @@ export default function NewSchoolForm() {
       })
   }
 
+  //for setting color picker state
   function handleChange(color, event) {
     setSchoolColor(color.hex)
   }
@@ -123,12 +131,12 @@ export default function NewSchoolForm() {
                   Submit
                 </Button>
               </Form>
-              </>
+            </>
           )
-        }
+          }
         </div>
       )
-    }
+      }
     </Container>
   )
 }

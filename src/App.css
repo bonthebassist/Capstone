@@ -1,7 +1,7 @@
-/* DASHBOARDPAGE STYLING */
-body {
-  background-color: #fbfbfb;
+* {
+  box-sizing: border-box;
 }
+
 /* PROFILE CARD CSS */
 .gradient-custom {
   /* fallback for old browsers */
@@ -14,28 +14,36 @@ body {
   background: linear-gradient(to right bottom, rgba(246, 211, 101, 1), rgba(253, 160, 133, 1))
 }
 
-/* @media only screen and (min-width: 993px) {
-  .content-div {
-    position: relative;
-    left: 250px;
-  }
-} */
-
+/* Wrappers */
 .content-div {
-  margin: 80px 10px 10px 20px
+  margin: 80px 10px 100px 20px
 }
 
+.home-card-div {
+  margin-bottom: 120px;
+  padding: 2em 2em 2em 2em;
+  text-align: center;
+}
+
+.home-div {
+  margin: 80px 0px 0px 0px;
+  padding: 0px 10px 0px 10px;
+}
+
+.about-div {
+  padding: 2em 2em 2em 2em;
+  text-align: center;
+  margin: collapse;
+}
+
+
+/* CARD STYLING */
 .add-card {
   color:rgb(128, 128, 128);
 }
-
 .add-card :hover {
   color: #fff;
-  background-color: rgb(128, 128, 128);
-}
-
-.adding-form {
-  width: 70%
+  background-color: #4fd8d8;
 }
 
 .school-card {
@@ -43,43 +51,50 @@ body {
 }
 .school-card :hover{
   color:white;
-  background-color: #0d6efd;
+  background-color: #14a8a8;
 }
-
 .school-card-title {
   font-size: 2.5em;
 }
 
-#home-logo {
-  width: 60%;
-  max-height: 600px;
-  /* background-color: lightgreen; */
+.student-card {
+  min-height: 70px;
+  background-color: #fbfbfb;
 }
-
-/* .jumbo {
-  background-color: lightgreen;
-} */
-
-.about-div {
-  background-color: #333;
-  color:white;
-  padding: 2em 2em 0em 2em;
-  text-align: center;
-  margin: collapse;
+.student-card-button {
+  text-align: right;
+  font-size: small;
 }
-
-.about-div button {
-  display: inline;
-  width: 40%;
+.student-card :hover{
+  background-color: #14a8a8;
+  color:white
+}
+.student-card-title {
+  font-size: 1.5em;
 }
 
 .home-card-title {
   color:#333;
 }
-
 .home-card {
   margin-bottom: 20px;
+  color:#333
 }
+
+.go-to-cards {
+  margin: 30px 0px 30px 0px
+}
+.go-to-title {
+  text-align: center;
+  font-size: 2em;
+  color:#333
+
+}
+.go-to-cards :hover{
+  background-color: #4fd8d8;
+}
+
+/* Button Styling */
 
 .sign-up-button {
   padding: 10px;
@@ -92,68 +107,17 @@ body {
 }
 
 .sign-up-button:hover {
-  background-color: lightgreen;
-  
-  box-shadow: 0 5px 15px rgba(197, 255, 185, 0.452);
-  
+  background-color: #4fd8d8; 
 }
 
 .sign-up-button:active {
-  background-color: rgb(93, 165, 93);
+  background-color: #a1e6e6;
   color:white;
 }
 
-.student-card {
-  min-height: 70px;
-  background-color: #fbfbfb;
-}
-.student-card-button {
-  text-align: right;
-  font-size: small;
-}
-.student-card :hover{
-  background-color: #0d6efd;
-  color:white
-}
-
-.student-card-title {
-  font-size: 1.5em;
-}
-
-* {
-  box-sizing: border-box;
-}
-
-.row {
-  margin-left:-5px;
-  margin-right:-5px;
-}
-  
-.column {
-  float: left;
-  width: 50%;
-  padding: 5px;
-}
-
-.row::after {
-  content: "";
-  clear: both;
-  display: table;
-}
-
-.form-container {
-  margin-top: 60px;
-  justify-content: center;
-  display: flex;
-  padding: 40px 60px 40px 60px;
-}
-
-.form {
-  width: 600px;
-  justify-self: center;
-  background-color:white;
-  padding:20px;
-  border: 2px solid black
+.about-div button {
+  display: inline;
+  width: 40%;
 }
 
 .form button {
@@ -164,9 +128,24 @@ body {
   margin: 20px 20px 20px 0px;
 }
 
-.home-div {
-  margin: 80px 0px 0px 0px;
-  padding: 0px 10px 0px 10px;
+
+/* Element styling */
+.footer {
+  position:sticky;
+  bottom: 0;
+  width: 100%;
+}
+
+.adding-form {
+  width: 70%
+}
+
+.table-background {
+  background-color: #0cc7c7;
+}
+
+h5 {
+  padding: 10px 10px 10px 0px;
 }
 
 .details-list {
@@ -176,7 +155,9 @@ body {
 
 .page-title {
   padding: 0.5em 0 0.5em 0;
-  text-decoration:underline;
+  text-align: center;
+  color: white;
+  font-size: 3em;
 }
 
 #invoice-title{
@@ -199,7 +180,15 @@ body {
   color:#333
 }
 
-h5 {
-  padding: 10px 10px 10px 0px;
-  text-decoration: underline;
+#home-logo {
+  width: 60%;
+  max-height: 600px;
+}
+
+.form {
+  width: 600px;
+  justify-self: center;
+  background-color:white;
+  padding:20px;
+  border: 2px solid black
 }

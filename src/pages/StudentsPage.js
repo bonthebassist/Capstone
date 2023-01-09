@@ -3,17 +3,23 @@ import { MDBCard, MDBCardBody, MDBCardTitle, MDBCardText, MDBIcon} from 'mdb-rea
 import { useNavigate } from "react-router-dom";
 import { AuthContext } from '../context/AuthProvider';
 import axios from 'axios'
+import { Container } from 'react-bootstrap';
 
 export default function StudentsPage() {
+  //Context and states
+  const { auth } = useContext(AuthContext)
+  const [studentData, setStudentData] = useState([])
+
+
+  //Navigation
   const navigate = useNavigate();
 
   function handleClick(path) {
     navigate(path);
   }
 
-  const { auth } = useContext(AuthContext)
-  const [studentData, setStudentData] = useState([])
 
+  //userEffect for loading Students that match user_id
   useEffect(() => {
     const config = {
       headers:{
@@ -28,6 +34,7 @@ export default function StudentsPage() {
       setStudentData(resp.data)
     })
   }, [auth.user_id, auth.token])
+
 
   //dynamically create cards based on user data
   let cardsMap = studentData.map((student) => {
@@ -47,6 +54,7 @@ export default function StudentsPage() {
 
   return (
     <>
+    <Container>
       <div className='content-div'>
       <h2 className='page-title'>Students</h2>
       <MDBCard className='add-card' >
@@ -54,10 +62,9 @@ export default function StudentsPage() {
           <MDBCardTitle> <MDBIcon fas icon="plus" /> Add a Student</MDBCardTitle>
         </MDBCardBody>
       </MDBCard>
-      
       {cardsMap}
-
       </div>
+      </Container>
     </>
   );
 }

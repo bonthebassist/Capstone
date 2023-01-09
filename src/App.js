@@ -13,6 +13,7 @@ import DisplaySchoolInfo from './components/DisplaySchoolInfo';
 import MyDetailsPage from './pages/MyDetailsPage';
 import DisplayStudent from './components/DisplayStudent';
 import DisplayStudentInfo from './components/DisplayStudentInfo';
+import LoggedInHome from './pages/LoggedInHome';
 
 import Login from './pages/Login';
 import Register from './pages/Register'
@@ -28,6 +29,7 @@ function App() {
         <Route path='/' element={<HomePage/>}/>
         <Route path='/Register' element={<Register />} />
         <Route path='/Login' element={<Login />} />
+        <Route path='/Home' element={<LoggedInHome/>} />
         <Route path='/Schools' element={<SchoolsPage />} />
         <Route path='/Students' element={<StudentsPage />} />
         <Route path='/Attendance' element={<Attendance />} />
@@ -42,6 +44,11 @@ function App() {
         </Route>
         <Route path='/Students/NewStudent' element={<NewStudentForm />} />
       </Routes>
+      <footer className='footer'>
+      <div className='text-center p-4' style={{ backgroundColor: 'rgba(0, 0, 0, 0.05)' }}>
+        © 2022 Copyright Bonnie Aue
+      </div>
+      </footer>
     </main>
   );
 }

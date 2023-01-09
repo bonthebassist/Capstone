@@ -1,5 +1,8 @@
 body {
   font-family: Roboto, Helvetica, Arial, sans-serif;
+  background-image: url("./resources/watercolor-mobile-background-yellow-blue-desktop-wallpaper-abstract-design.jpg");
+  background-size:auto;
+  background-repeat: no-repeat;
 }
 
 a, a:visited {
@@ -62,3 +65,9 @@ a, a:visited {
     padding: 0.5rem;
     margin-bottom: 0.5rem;
 }
+
+.welcome-msg {
+    text-align: center;
+    padding: 1em;
+    color:white;
+  }
