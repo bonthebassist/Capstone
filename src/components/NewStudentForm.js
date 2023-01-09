@@ -4,10 +4,10 @@ import Form from 'react-bootstrap/Form';
 import { Container } from 'react-bootstrap';
 import axios from 'axios'
 import { AuthContext } from '../context/AuthProvider';
-import { NavLink, Navigate } from 'react-router-dom';
+import { Navigate } from 'react-router-dom';
 
 export default function NewSchoolForm() {
-  const { auth, setAuth } = useContext(AuthContext)
+  const { auth } = useContext(AuthContext)
   const [schoolsData, setSchoolsData] = useState([])
   const [success, setSuccess] = useState(false);
   const [Student, setStudent] = useState({
@@ -199,7 +199,6 @@ export default function NewSchoolForm() {
                 <Button variant="dark" className="button" type="submit" onClick={handleClick}>
                   Submit
                 </Button>
-                {/* <h4>Back to <NavLink to="/Schools">Schools</NavLink> | <NavLink to="/Students">Students</NavLink></h4> */}
               </Form>
             </>
           )

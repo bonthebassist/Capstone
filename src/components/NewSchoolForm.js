@@ -1,4 +1,4 @@
-import React, { useState, useContext, useEffect } from 'react';
+import React, { useState, useContext } from 'react';
 import { Navigate, NavLink } from 'react-router-dom';
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
@@ -8,7 +8,7 @@ import { AuthContext } from '../context/AuthProvider';
 import { Container } from 'react-bootstrap';
 
 export default function NewSchoolForm() {
-  const { auth, setAuth } = useContext(AuthContext)
+  const { auth } = useContext(AuthContext)
 
   const [School, setSchool] = useState({ schoolName: '' })
   const [UsefulLinks, setUsefulLinks] = useState([])
@@ -19,25 +19,7 @@ export default function NewSchoolForm() {
   const [SchoolColor, setSchoolColor] = useState('')
   const [success, setSuccess] = useState(false);
 
-  const reqBody =
-  {
-    "schoolName": School.schoolName,
-    "schoolAdminDetails": [
-      {
-        "title": SchoolAdminDetails.title,
-        "email": SchoolAdminDetails.email
-      }
-    ],
-    "usefulLinks": [
-      {
-        "linkTitle": UsefulLinks.linkTitle,
-        "linkURL": UsefulLinks.linkURL
-      }
-    ],
-    "schoolColor": SchoolColor
-  }
-
-  const reqBody2 = 
+  const reqBody = 
     {
       "tutor_id": auth.user_id,
       "schoolName": School.schoolName,
@@ -64,7 +46,7 @@ export default function NewSchoolForm() {
 
   const handleClick = (e) => {
     e.preventDefault()
-    axios.post(url, reqBody2, config)
+    axios.post(url, reqBody, config)
       .then(response => {
         console.log(response.data)
         setSuccess(true);

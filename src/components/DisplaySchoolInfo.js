@@ -7,7 +7,6 @@ import { Button, Card, CardGroup } from 'react-bootstrap'
 import axios from 'axios'
 import { AuthContext } from '../context/AuthProvider';
 import { MDBIcon } from 'mdb-react-ui-kit';
-// import { Icon } from '@iconify/react';
 
 function DisplaySchoolInfo() {
   const params = useParams();

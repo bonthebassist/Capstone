@@ -1,12 +1,10 @@
 import React from 'react'
-
 import { Container, Row, Col, Card } from 'react-bootstrap'
 import bigLogo from '../ChutaLogo-01.svg'
 import Diary from '../resources/home-icons-04.png'
 import Mail from '../resources/home-icons-01.png'
 import Invoice from '../resources/home-icons-03.png'
 import Checklist from '../resources/home-icons-02.png'
-
 import { useNavigate } from 'react-router-dom';
 
 function HomePage() {

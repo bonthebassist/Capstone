@@ -1,5 +1,5 @@
 import { useEffect, useState, useContext } from 'react'
-import { Button, Form, Accordion, ButtonGroup, Card, CardGroup, Container } from 'react-bootstrap';
+import { Button, Form, Accordion, ButtonGroup, Card, CardGroup } from 'react-bootstrap';
 import { useParams, Link } from 'react-router-dom';
 import axios from 'axios';
 import { AuthContext } from '../context/AuthProvider';
@@ -26,13 +26,11 @@ export default function DisplayStudentInfo() {
     })
     const [selectedTerm, setSelectedTerm] = useState()
     const [selectedYear, setSelectedYear] = useState()
-    const [success, setSuccess] = useState(false)
     const [attSuccess, setAttSuccess] = useState(false)
     const [errMsg, setErrMsg] = useState('')
     const [successMsg, setSuccessMsg] = useState('')
     const [editedStudent, setEditedStudent] = useState('')
     const [clicked, setClicked] = useState(false)
-    const [editedAttendance, setEditedAttendance] = useState('')
     const [clickedEditAtt, setClickedEditAtt] = useState(false)
     const [deleteSuccess, setDeleteSuccess] = useState(false)
 
@@ -105,7 +103,6 @@ export default function DisplayStudentInfo() {
         axios.post(`http://localhost:4000/post/attendance`, reqBody2, config)
             .then(response => {
                 console.log(response.data)
-                setSuccess(true);
                 setSuccessMsg('Term succesfully created')
             }).catch(error => {
                 console.log(error)
@@ -141,7 +138,7 @@ export default function DisplayStudentInfo() {
 
     const deleteStudent = (e) => {
         e.preventDefault()
-        console.log("studentDoc.studentFirstName" + " to be deleted")
+        console.log(studentDoc.studentFirstName + " to be deleted")
         axios.delete(`http://localhost:4000/delete/student?student=${studentDoc._id}`, config)
             .then(response => {
                 console.log(response.data)

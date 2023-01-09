@@ -1,5 +1,5 @@
 import React from 'react'
-import { NavLink, Link } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { useRef, useState, useEffect, useContext } from 'react'
 import {AuthContext} from "../context/AuthProvider"
 import axios from 'axios';
@@ -10,11 +10,10 @@ import Form from 'react-bootstrap/Form';
 import { Container } from 'react-bootstrap';
 
 function Login() {
-  const { auth, setAuth } = useContext(AuthContext)
+  const { setAuth } = useContext(AuthContext)
   const userRef = useRef();
   const errRef = useRef();
 
-  const [user, setUser] = useState();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [errMsg, setErrMsg] = useState('');
@@ -42,15 +41,15 @@ function Login() {
       const firstName = response?.data?.firstName
       const user_id = response?.data?._id
       const token = response?.data?.token
+      const currentTermDate = response?.data?.currentTermDate
 
-      let userStuff = {"user_id":user_id, "token":token, "firstName":firstName, "user_id": user_id}
+      let userStuff = {"user_id":user_id, "token":token, "firstName":firstName, "currentTermDate": currentTermDate}
       
       localStorage.setItem('user', JSON.stringify(userStuff))
       
-      setAuth({ email: email, token: token, firstName: firstName, user_id: user_id })
+      setAuth({ email: email, token: token, firstName: firstName, user_id: user_id, currentTermDate: currentTermDate })
       setEmail('');
       setPassword('');
-      setSuccess(true);
 
       
     } catch (err) {
@@ -119,7 +118,3 @@ function Login() {
 }
 
 export default Login
-
-// const accessToken = response?.data?.accessToken;
-//       const roles = response?.data?.roles;
-//       setAuth({ user, pwd, roles, accessToken })

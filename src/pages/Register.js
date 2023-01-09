@@ -54,8 +54,7 @@ const Register = () => {
                     withCredentials: true
                 }
             );
-            // console.log(response?.data);
-            // console.log(response?.accessToken);
+
             console.log(JSON.stringify(response))
             setSuccess(true);
             //clear state and controlled inputs

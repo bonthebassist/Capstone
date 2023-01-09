@@ -1,6 +1,5 @@
 import React from 'react';
 import { MDBTable, MDBTableHead, MDBTableBody } from 'mdb-react-ui-kit';
-import DashboardElements from './DashboardPage';
 import { AuthContext } from '../context/AuthProvider';
 import { useNavigate } from 'react-router-dom';
 import { useContext, useEffect, useState } from 'react';
@@ -15,7 +14,6 @@ export default function AttendancePage() {
   const [selectedTerm, setSelectedTerm] = useState()
   const [selectedYear, setSelectedYear] = useState()
   const [errMsg, setErrMsg] = useState('')
-  const [successMsg, setSuccessMsg] = useState('')
   
   const navigate = useNavigate();
 
@@ -40,7 +38,7 @@ export default function AttendancePage() {
         setSchools(schoolIDsArray)
         setSchoolNames(schoolNamesArray)
       });
-  }, [auth.token, auth.email])
+  }, [auth.token, auth.user_id])
 
   // populate attendanceData once FIND button is clicked
   const populateTables = () => {
@@ -60,7 +58,7 @@ export default function AttendancePage() {
       axios.get(fancyURL, config)
         .then((resp) => {
           console.log(resp.data.length)
-          if (resp.data.length != 0){
+          if (resp.data.length !== 0){
             setErrMsg('')
             setAttendanceData(oldArray => [...oldArray, resp.data])
           } 
@@ -97,7 +95,6 @@ export default function AttendancePage() {
           </Form.Select>
           <Button className='buttons' onClick={populateTables}>Find</Button>
           {!errMsg ? null : <p className='errmsg'>{errMsg}</p>}
-          {!successMsg ? null : <p className='success-msg'>{successMsg}</p>}
         </Form.Group>
         
         {!attendanceData ? null :

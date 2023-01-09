@@ -1,19 +1,8 @@
 import React, { useContext, useState, useEffect } from 'react';
-import {
-  MDBCard,
-  MDBCardBody,
-  MDBCardTitle,
-  MDBCardText,
-  MDBBtn,
-  MDBInputGroup,
-  MDBInput,
-  MDBIcon
-} from 'mdb-react-ui-kit';
+import { MDBCard, MDBCardBody, MDBCardTitle, MDBCardText, MDBIcon} from 'mdb-react-ui-kit';
 import { useNavigate } from "react-router-dom";
-import DashboardElements from './DashboardPage';
 import { AuthContext } from '../context/AuthProvider';
 import axios from 'axios'
-
 
 export default function StudentsPage() {
   const navigate = useNavigate();

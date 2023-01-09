@@ -1,10 +1,9 @@
 import React, {useContext, useEffect, useState} from 'react';
 import { Button, Form, Container } from 'react-bootstrap';
-import DashboardElements from './DashboardPage';
 import axios from 'axios';
 import {AuthContext} from '../context/AuthProvider';
 import { Icon } from '@iconify/react';
-import { faLongArrowAltUp } from '@fortawesome/free-solid-svg-icons';
+
 
 export default function MyDetailsPage() {
   const {auth, setAuth} = useContext(AuthContext)
@@ -28,7 +27,7 @@ export default function MyDetailsPage() {
       setEditedDetails(resp.data)
     })
     
-  }, [auth.user_id])
+  }, [auth.user_id, auth.token])
 
   useEffect(() => {
     setErrMsg('')
@@ -69,7 +68,7 @@ export default function MyDetailsPage() {
                 setErrMsg(`${error}`)
             })
   }
-  
+
   const deleteUser = () => {
     console.log(userDetails.firstName + " to be deleted")
     const config = {
@@ -104,12 +103,6 @@ export default function MyDetailsPage() {
           <Icon icon="noto-v1:party-popper" width="20" height="20" rotate={3} />
           <em> feature coming soon! </em>
           <Icon icon="noto-v1:party-popper" width="20" height="20" />
-          {/* <ul>
-            <li><strong>To send Invoice</strong>{userDetails.messages.invoiceSend ? userDetails.messages.invoiceSend : <em> unset</em>}</li>
-            <li><strong>Invoice Reminder</strong>{userDetails.messages.invoiceReminder ? userDetails.messages.invoiceReminder : <em> unset</em>}</li>
-            <li><strong>Late student</strong>{userDetails.messages.lateForLesson ? userDetails.messages.lateForLesson : <em> unset</em>}</li>
-            <li><strong>Absent student</strong>{userDetails.messages.absentFromLesson ? userDetails.messages.absentFromLesson : <em> unset</em>}</li>
-          </ul> */}
       </p>
       {successMsg ? <p className='success-msg'>{successMsg}</p> : null}
       {clicked ? 
