@@ -92,12 +92,9 @@ export default function NewSchoolForm() {
 
   return (
     <Container className="form-container">
-      {!auth.user_id ? (
-        <h2>Please <NavLink to="/Login">Login</NavLink></h2>
-      ) : (
         <div className='content-div'>
           {success ? (
-            <Navigate to="/Schools" />
+            <Navigate to="/Students" />
           ) : (
             <>
               <h2>Add a student</h2>
@@ -208,8 +205,7 @@ export default function NewSchoolForm() {
           )
           }
         </div>
-      )
-      }
+      
     </Container>
   );
 }

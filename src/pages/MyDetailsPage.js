@@ -4,9 +4,10 @@ import DashboardElements from './DashboardPage';
 import axios from 'axios';
 import {AuthContext} from '../context/AuthProvider';
 import { Icon } from '@iconify/react';
+import { faLongArrowAltUp } from '@fortawesome/free-solid-svg-icons';
 
 export default function MyDetailsPage() {
-  const {auth} = useContext(AuthContext)
+  const {auth, setAuth} = useContext(AuthContext)
   const [userDetails, setUserDetails] = useState('')
   const [clicked, setClicked] = useState('')
   const [successMsg, setSuccesMsg] = useState('')
@@ -67,6 +68,28 @@ export default function MyDetailsPage() {
                 console.log(error)
                 setErrMsg(`${error}`)
             })
+  }
+  
+  const deleteUser = () => {
+    console.log(userDetails.firstName + " to be deleted")
+    const config = {
+      headers:{
+        'Content-type': 'application/json',
+        'x-access-token': auth.token
+      }
+    };
+    axios.delete(`http://localhost:4000/delete/user?user=${userDetails._id}`, config)
+            .then(response => {
+                console.log(response.data)
+                setAuth({ user_id: "", token:"" })
+                localStorage.clear();
+                //navigate to '/'
+                window.location.href = "http://localhost:3000/"
+            }).catch(error => {
+                console.log(error)
+                setErrMsg(error)
+            })
+
   }
 
   return (
@@ -137,8 +160,11 @@ export default function MyDetailsPage() {
                   </Form.Group>
                   <Form.Group>
                       <Button type="submit" disabled={!editedDetails.firstName || !editedDetails.lastName || !editedDetails.email }>Save</Button>
-                      <Button variant='danger' type="button" onClick={()=> setClicked(false)}>Cancel</Button>
+                      <Button variant='dark' type="button" onClick={()=> setClicked(false)}>Cancel</Button>
+                      
                   </Form.Group>
+                  <Button variant='danger' type="button" onClick={deleteUser}>Delete Account</Button>
+                      <p><strong style={{color: 'red'}}>WARNING </strong> This will delete all associated schools, students & attendance records.</p>
                   
               </Form>
   

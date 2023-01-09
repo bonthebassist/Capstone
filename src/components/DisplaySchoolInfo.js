@@ -1,6 +1,6 @@
 import React from 'react'
 import { useEffect, useState, useContext } from 'react'
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import Form from 'react-bootstrap/Form';
 import { useParams } from 'react-router-dom'
 import { Button, Card, CardGroup } from 'react-bootstrap'
@@ -27,6 +27,8 @@ function DisplaySchoolInfo() {
     linkTitle: '',
     linkURL:''
   })
+  const [deleteSuccess, setDeleteSuccess] = useState(false)
+  const [errMsg, setErrMsg] = useState('')
 
   const navigate = useNavigate();
 
@@ -74,13 +76,14 @@ function DisplaySchoolInfo() {
           return student.studentEmail
         })
         let joinedStudentEmails = studentEmailArray.join()
-        setStudentEmails(joinedStudentEmails[0])
+        console.log(joinedStudentEmails)
+        setStudentEmails(joinedStudentEmails)
 
         let parentEmailArray = actualStudents.map((student)=>{
           return student.parentEmail
         })
         let joinedParentEmails = parentEmailArray.join()
-        setParentEmails(joinedParentEmails[0])
+        setParentEmails(joinedParentEmails)
       })
   }, [auth])
 
@@ -132,7 +135,21 @@ function DisplaySchoolInfo() {
     
     console.log(reqBody)
   }
- 
+  
+  const deleteSchool = (e) => {
+    e.preventDefault()
+    console.log(schoolName + " to be deleted")
+    axios.delete(`http://localhost:4000/delete/school?school=${schoolsData._id}`, config)
+            .then(response => {
+                console.log(response.data)
+                setDeleteSuccess(true)
+            }).catch(error => {
+                console.log(error)
+                setErrMsg(error)
+            })
+  }
+
+
   return (
     <>
       {!schoolsData ? null : (
@@ -144,7 +161,7 @@ function DisplaySchoolInfo() {
               schoolsData.schoolAdmin.map((administrator) => {
               return (
                 <Card className='add-card'>
-                  <Card.Body onClick={(e) => {
+                  <Card.Body style={{cursor:'pointer'}} onClick={(e) => {
                     e.preventDefault();
                     window.location.href = `mailto:${administrator.contactEmail}`;
                   }}>
@@ -156,7 +173,7 @@ function DisplaySchoolInfo() {
             }
             
             <Card className='add-card' >
-              <Card.Body onClick={(e) => {
+              <Card.Body style={{cursor:'pointer'}} onClick={(e) => {
                 e.preventDefault();
                 console.log(studentEmails)
                 window.location.href = `mailto:${studentEmails}?cc=${parentEmails}`;
@@ -165,7 +182,7 @@ function DisplaySchoolInfo() {
               </Card.Body>
             </Card>
             <Card className='add-card' >
-              <Card.Body onClick={(e) => {
+              <Card.Body style={{cursor:'pointer'}} onClick={(e) => {
                 e.preventDefault();
                 console.log(parentEmails)
                 window.location.href = `mailto:${parentEmails}`;
@@ -174,7 +191,7 @@ function DisplaySchoolInfo() {
               </Card.Body>
             </Card>
             <Card className='add-card' >
-              <Card.Body onClick={() => setAddAdminClick(true)}>
+              <Card.Body style={{cursor:'pointer'}} onClick={() => setAddAdminClick(true)}>
                 <Card.Title> <MDBIcon fas icon="plus" /> Add </Card.Title>
               </Card.Body>
             </Card>
@@ -212,7 +229,7 @@ function DisplaySchoolInfo() {
               schoolsData.usefulLinks.map((link) => {
               return (
                 <Card className='add-card'>
-                  <Card.Body onClick={(e) => {
+                  <Card.Body style={{cursor:'pointer'}} onClick={(e) => {
                     e.preventDefault();
                     window.location.href = `${link.linkURL}`;
                   }}>
@@ -223,7 +240,7 @@ function DisplaySchoolInfo() {
               })
             }
             <Card className='add-card' >
-              <Card.Body onClick={(e) => {
+              <Card.Body style={{cursor:'pointer'}} onClick={(e) => {
                 e.preventDefault();
                 window.location.href = `${schoolsData.usefulLinks[0].linkURL}`;
               }}>
@@ -231,7 +248,7 @@ function DisplaySchoolInfo() {
               </Card.Body>
             </Card>
             <Card className='add-card' >
-              <Card.Body onClick={() => setAddLinkClick(true)}>
+              <Card.Body style={{cursor:'pointer'}} onClick={() => setAddLinkClick(true)}>
                 <Card.Title> <MDBIcon fas icon="plus" /> Add </Card.Title>
               </Card.Body>
             </Card>
@@ -268,7 +285,7 @@ function DisplaySchoolInfo() {
             return (
               <CardGroup>
                 <Card className='student-card'>
-                  <Card.Body onClick={() => handleClick(`/DisplayStudent/${student.studentFirstName + " " + student.studentLastName}`)}>
+                  <Card.Body style={{cursor:'pointer'}} onClick={() => handleClick(`/DisplayStudent/${student.studentFirstName + " " + student.studentLastName}`)}>
                     <Card.Title className='student.card.title'>{student.studentFirstName} {student.studentLastName}</Card.Title>
                     <Card.Text>{student.instrument} . Year {student.yearLevel}</Card.Text>
                   </Card.Body>
@@ -277,12 +294,17 @@ function DisplaySchoolInfo() {
             )
           }) : null}
           <Card className='add-card' >
-            <Card.Body onClick={() => handleClick(`/Students/NewStudent`)}>
+            <Card.Body style={{cursor:'pointer'}} onClick={() => handleClick(`/Students/NewStudent`)}>
               <Card.Title> <MDBIcon fas icon="plus" /> Add a Student</Card.Title>
             </Card.Body>
           </Card>
+          {!deleteSuccess ? null : <p className='success-msg'>Deleted succesfully. Go back to <Link to='/Schools'>Schools</Link></p>}
+          {!errMsg ? null : <p className='errmsg'>{errMsg}</p>}
+          <Button variant='danger' className='buttons' onClick={deleteSchool}>Delete School</Button>
+          <p><strong style={{color: 'red'}}>WARNING </strong>This will delete all associated students and attendance records</p>
         </div>
       )}
+      
     </>
   )
 }

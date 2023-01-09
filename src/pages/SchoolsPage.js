@@ -1,15 +1,8 @@
 import React, { useContext, useEffect, useState } from 'react'
-import {
-  MDBCard,
-  MDBCardBody,
-  MDBCardTitle,
-  MDBIcon
-} from 'mdb-react-ui-kit';
+import { MDBCard, MDBCardBody, MDBCardTitle, MDBIcon } from 'mdb-react-ui-kit';
 import { useNavigate } from "react-router-dom";
-import DashboardElements from './DashboardPage';
 import {AuthContext} from '../context/AuthProvider';
 import axios from 'axios';
-
 
 export default function SchoolsPage() {
   //Auth Context and School Data State
