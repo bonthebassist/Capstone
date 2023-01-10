@@ -44,11 +44,11 @@ function App() {
         </Route>
         <Route path='/Students/NewStudent' element={<NewStudentForm />} />
       </Routes>
-      <footer className='footer'>
+      {/* <footer className='footer'>
       <div className='text-center p-4' style={{ backgroundColor: 'rgba(0, 0, 0, 0.05)' }}>
         © 2022 Copyright Bonnie Aue
       </div>
-      </footer>
+      </footer> */}
     </main>
   );
 }

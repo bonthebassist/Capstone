@@ -19,7 +19,7 @@ function LoggedInHome() {
     return (
         <Container>
             <div className='content-div'>
-                <h4 className='welcome-msg'>Hi {auth.firstName}! What school are we at today?</h4>
+                <h4 className='welcome-msg'>Hi {auth.firstName}! What's our office today?</h4>
 
                 <Card className='go-to-cards'>
                     <Card.Body style={{ cursor: 'pointer' }} onClick={() => handleClick('/Schools')}>
